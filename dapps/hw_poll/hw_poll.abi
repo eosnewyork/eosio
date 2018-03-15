@@ -1,0 +1,18 @@
+{
+  "types": [ ],
+  "structs": [{
+      "name": "create",
+      "base": "",
+      "fields": [
+        {"name":"creator", "type":"account_name"},
+        {"name":"question", "type":"string"}
+      ]
+    }
+  ],
+  "actions": [{
+      "name": "create",
+      "type": "create"
+    }
+  ],
+  "tables": []
+}
