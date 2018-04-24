@@ -1,0 +1,15 @@
+[Unit]
+Description=nodeos service
+After=syslog.target network.target
+
+[Service]
+User={{ eos_user }}
+Type=forking
+PIDFile={{ nodeos_spool_dir }}/{{ nodeos_pid_file }}
+# EnvironmentFile = 
+ExecStart={{ nodeos_run_script }} start
+ExecReload={{ nodeos_run_script }} restart
+ExecStop={{ nodeos_run_script }} stop
+
+[Install]
+WantedBy=multi-user.target

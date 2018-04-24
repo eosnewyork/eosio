@@ -1,0 +1,6 @@
+
+- name: enable and start nodeos
+  service:
+    name: nodeos
+    enabled: yes
+    state: started

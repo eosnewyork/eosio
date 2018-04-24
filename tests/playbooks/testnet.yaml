@@ -1,0 +1,63 @@
+
+- name: Create bios node
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tags: bios
+  vars:
+    machine_type: n1-standard-4
+    image: ubuntu-1604-xenial-v20180418
+    ansible_python_interpreter: /opt/ansible/bin/python
+    service_account_email: ansible@eosny-194919.iam.gserviceaccount.com
+    credentials_file: /home/deck/ansible/account/eosny-b939b94220f8.json
+    project_id: eosny-194919
+    group_name: bios
+    metadata: '{}'
+    gce_zone: us-east1-b
+    disk_size: 32
+  roles:
+    - roles/launch_host    
+
+- name: build/Start bios node
+  hosts: bios
+  connection: ssh
+  become: True
+  tags: bios
+  vars:
+    # eos information
+    eos_github: https://github.com/EOSIO/eos
+    eos_version: 3.0.0-0
+    # eosio
+    eos_user: eosio
+    eos_group: eosio
+    eosio_pub_key: '{{ bios_pub_key }}'
+    eosio_priv_key: '{{ bios_priv_key }}'
+    eos_log_dir: /var/log/eosio
+    eos_lib_dir: /var/lib/eosio
+    eos_home_opt: /home/{{ eos_user }}/opt
+    eos_etc_dir: /etc/eosio
+    eos_etc_node_dir: '{{ eos_etc_dir }}/node_00'
+    # nodeos information
+    nodeos_p2p_port: 9876
+    nodeos_http_port: 8888
+    nodeos_data_dir: /opt/eosio
+    nodeos_config_dir: /opt/eosio
+    nodeos_script_dir: /opt/eosio
+    nodeos_run_script: "{{ nodeos_script_dir }}/nodeos.sh"
+    nodeos_spool_dir: /var/spool/nodeos
+    nodeos_pid_file: nodeos.pid
+    # keosd
+    keosd_http_port: 8000
+    # producer info
+    agent_name: bios
+    producer_name: eosio
+    pub_key: "{{ bios_pub_key }}"
+    priv_key: "{{ bios_priv_key }}"
+    # external libraries information
+    #boost_url: https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+    #boost_file: 
+    #mongo_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.6.3.tgz
+  roles:
+    - roles/eosio/install
+    - roles/eosio/start
+

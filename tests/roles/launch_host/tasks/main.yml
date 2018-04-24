@@ -1,0 +1,26 @@
+---
+
+- name: Launching host
+  gce:
+    service_account_email: "{{ service_account_email }}"
+    credentials_file: "{{ credentials_file }}"
+    project_id: "{{ project_id }}"
+    instance_names: "{{ group_name }}"
+    machine_type: "{{ machine_type }}"
+    image: "{{ image }}"
+    metadata: "{{ metadata }}"
+    zone: "{{ gce_zone }}"
+    disk_size: "{{ disk_size }}"
+    persistent_boot_disk: True
+  register: gce
+
+- name: Wait for SSH to come up
+  wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=60
+  loop: "{{ gce.instance_data }}"
+
+- name: Add host to groupname
+  add_host:
+    hostname: "{{ item.public_ip }}"
+    groupname: "{{ group_name }}"
+  loop: "{{ gce.instance_data }}"
+

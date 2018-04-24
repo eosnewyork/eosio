@@ -1,0 +1,113 @@
+---
+
+- name: create group {{ eos_group }}
+  group:
+    name: "{{ eos_group }}"
+    state: present
+    gid: 121
+
+- name: create {{ eos_user }} user
+  user:
+    name: "{{ eos_user }}"
+    state: present
+    comment: EOS User
+    uid: 115
+    group: "{{ eos_group }}"
+
+- name: add {{ eos_group }} to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ eos_group }}'
+    line: '%{{ eos_group }} ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+
+- name: create data/config/script dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ eos_user }}"
+    group: "{{ eos_group }}"
+  with_items:
+    - "{{ eos_log_dir }}"
+    - "{{ eos_lib_dir }}"
+    - "{{ eos_etc_dir }}"
+    - "{{ eos_etc_node_dir }}"
+    - "{{ nodeos_data_dir }}"
+    - "{{ nodeos_config_dir }}"
+    - "{{ nodeos_script_dir }}"
+    - "{{ nodeos_spool_dir }}"
+
+# this is used to ensure eos cpack installs correctly.
+# this will be replaced soon
+- name: TEMP ln eos bins to /usr/bin/
+  file:
+    src: /usr/local/bin/{{ item }}
+    dest: /usr/bin/{{ item }}
+    state: link
+    force: yes
+  with_items:
+    - nodeos
+
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - clang-4.0
+    - lldb-4.0
+    - libclang-4.0-dev
+    - libssl-dev
+    - cmake
+    - libbz2-dev
+    - libgmp3-dev
+    - autotools-dev
+    - libbz2-dev
+    - libicu-dev
+    - python3-dev
+    - autoconf
+    - libtool
+    - build-essential
+    - doxygen
+    - supervisor
+    
+
+- name: install genesis file
+  template:
+    src: eosio/genesis.json.j2
+    dest: "{{ nodeos_data_dir }}/genesis.json"
+    mode: 0700
+    owner: "{{ eos_user }}"
+
+- name: install config file
+  template:
+    src: eosio/config.ini.j2
+    dest: "{{ nodeos_data_dir }}/config.ini"
+    mode: 0700
+    owner: "{{ eos_user }}"
+
+- name: add scripts
+  template:
+    src: scripts/nodeos.sh.j2
+    dest: "{{ nodeos_script_dir }}/nodeos.sh"
+    owner: "{{ eos_user }}"
+    mode: 0700
+
+- name: create service file
+  template:
+    src: systemd/nodeos.service.j2
+    dest: /etc/systemd/system/nodeos.service
+    mode: 0644
+
+- name: copy deb file
+  copy:
+    src: eos.io_{{ eos_version }}_amd64.deb
+    dest: /tmp
+
+- name: install eos
+  apt:
+    deb: /tmp/eos.io_{{ eos_version }}_amd64.deb
+  ignore_errors: yes
+
+
