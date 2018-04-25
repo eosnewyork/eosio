@@ -22,5 +22,5 @@ pip install ansible
 
 
 ```
-ansible-playbook playbooks/testnet.yaml -i inventory/testnet.yaml -e '{"service_account_email": "ansible@eosny-194919.iam.gserviceaccount.com", "credentials_file": "/home/deck/ansible/account/eosny-b939b94220f8.json", "project_id": "eosny-194919"}'
+ansible-playbook playbooks/testnet.yaml -i inventory/testnet.yaml -e '{"service_account_email": "{YOUR_ACCT_EMAIL}", "credentials_file": "{YOUR_CRED_FILE}", "project_id": "{YOUR_PROJ_ID}"}'
 ```
