@@ -3,9 +3,9 @@ mainnet: true  # REQUIRED, one or the other, not both.
 # testnet: true
 # Marking mainnet=true means we automatically disabling all the TESTNET features in the boot_sequence
 
-email_support: support@example.com
-email_abuse: abuse@example.com
-email_tech: tech@example.com
+email_support: support@eosnewyork.io
+email_abuse: abuse@eosnewyork.io
+email_tech: tech@eosnewyork.io
 
 social_twitter: https://twitter.com/eosnewyork
 social_telegram: https://t.me/eosnewyorkchat
