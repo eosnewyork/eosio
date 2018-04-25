@@ -21,6 +21,6 @@
 - name: Add host to groupname
   add_host:
     hostname: "{{ item.public_ip }}"
-    groupname: "{{ group_name }}"
+    groups: "{{ group_name }}"
   loop: "{{ gce.instance_data }}"
 

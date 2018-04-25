@@ -3,7 +3,7 @@ Description=nodeos service
 After=syslog.target network.target
 
 [Service]
-User={{ eos_user }}
+User={{ eosio_user }}
 Type=forking
 PIDFile={{ nodeos_spool_dir }}/{{ nodeos_pid_file }}
 # EnvironmentFile = 

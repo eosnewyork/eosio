@@ -4,3 +4,17 @@
     name: nodeos
     enabled: yes
     state: started
+
+- name: wait for nodeos to start and produce
+  wait_for:
+    timeout=5
+  delegate_to: localhost
+
+- name: tail nodeos log file
+  command: tail {{ nodeos_log_file }}
+  register: nodeos_log
+
+- name: verify node is producing
+  debug:
+    msg: "{{ nodeos_log.stdout_lines | quote }}"
+

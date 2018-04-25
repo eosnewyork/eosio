@@ -1,39 +1,39 @@
 ---
 
-- name: create group {{ eos_group }}
+- name: create group {{ eosio_group }}
   group:
-    name: "{{ eos_group }}"
+    name: "{{ eosio_group }}"
     state: present
     gid: 121
 
-- name: create {{ eos_user }} user
+- name: create {{ eosio_user }} user
   user:
-    name: "{{ eos_user }}"
+    name: "{{ eosio_user }}"
     state: present
     comment: EOS User
     uid: 115
-    group: "{{ eos_group }}"
+    group: "{{ eosio_group }}"
 
-- name: add {{ eos_group }} to sudoers
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^{{ eos_group }}'
-    line: '%{{ eos_group }} ALL=(ALL) NOPASSWD: ALL'
-    validate: visudo -cf %s
+#- name: add {{ eosio_group }} to sudoers
+#  lineinfile:
+#    dest: /etc/sudoers
+#    state: present
+#    regexp: '^{{ eosio_group }}'
+#    line: '%{{ eosio_group }} ALL=(ALL) NOPASSWD: ALL'
+#    validate: visudo -cf %s
 
-- name: create data/config/script dir
+- name: create various dir
   file:
     path: "{{ item }}"
     state: directory
     mode: 0755
-    owner: "{{ eos_user }}"
-    group: "{{ eos_group }}"
+    owner: "{{ eosio_user }}"
+    group: "{{ eosio_group }}"
   with_items:
-    - "{{ eos_log_dir }}"
-    - "{{ eos_lib_dir }}"
-    - "{{ eos_etc_dir }}"
-    - "{{ eos_etc_node_dir }}"
+    - "{{ eosio_log_dir }}"
+    - "{{ eosio_lib_dir }}"
+    - "{{ eosio_etc_dir }}"
+    - "{{ eosio_etc_node_dir }}"
     - "{{ nodeos_data_dir }}"
     - "{{ nodeos_config_dir }}"
     - "{{ nodeos_script_dir }}"
@@ -41,7 +41,7 @@
 
 # this is used to ensure eos cpack installs correctly.
 # this will be replaced soon
-- name: TEMP ln eos bins to /usr/bin/
+- name: TEMP symlink nodeos bin to /usr/bin/ because deb file wants that
   file:
     src: /usr/local/bin/{{ item }}
     dest: /usr/bin/{{ item }}
@@ -78,20 +78,20 @@
     src: eosio/genesis.json.j2
     dest: "{{ nodeos_data_dir }}/genesis.json"
     mode: 0700
-    owner: "{{ eos_user }}"
+    owner: "{{ eosio_user }}"
 
 - name: install config file
   template:
     src: eosio/config.ini.j2
     dest: "{{ nodeos_data_dir }}/config.ini"
     mode: 0700
-    owner: "{{ eos_user }}"
+    owner: "{{ eosio_user }}"
 
 - name: add scripts
   template:
     src: scripts/nodeos.sh.j2
     dest: "{{ nodeos_script_dir }}/nodeos.sh"
-    owner: "{{ eos_user }}"
+    owner: "{{ eosio_user }}"
     mode: 0700
 
 - name: create service file
@@ -102,12 +102,11 @@
 
 - name: copy deb file
   copy:
-    src: eos.io_{{ eos_version }}_amd64.deb
+    src: eos.io_{{ eosio_version }}_amd64.deb
     dest: /tmp
 
 - name: install eos
   apt:
-    deb: /tmp/eos.io_{{ eos_version }}_amd64.deb
+    deb: /tmp/eos.io_{{ eosio_version }}_amd64.deb
   ignore_errors: yes
-
 
