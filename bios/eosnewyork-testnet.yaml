@@ -29,13 +29,13 @@ eosio_https: https://test.eosnewyork.io
 eosio_initial_authority:  # To be injected in a newly created network where you participate.
   owner:
     threshold: 1
-    keys: EOS5mAjRhv4NxRV3CMit7q5aUU9bDrHXz2zKRqkoy85mxait79uP3
-    - public_key: 
+    keys: 
+    - public_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
       weight: 1
   active:
     threshold: 1
     keys:
-    - public_key: EOS5mAjRhv4NxRV3CMit7q5aUU9bDrHXz2zKRqkoy85mxait79uP3
+    - public_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
       weight: 1
 
 # The following one is used by the boot to setup the initial appointed
