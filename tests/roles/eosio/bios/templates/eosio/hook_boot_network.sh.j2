@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# `boot_network` hook
+# $1 genesis JSON
+# $2 ephemeral public key
+# $3 ephemeral private key
+#
+# This process must not BLOCK.
+
+echo "Copying base config"
+cp base_config.ini {{ nodeos_config_dir}}/config.ini
+
+echo "Writing genesis.json"
+echo $1 > {{ nodeos_config_dir}}/genesis.json
+
+echo "producer-name = eosio" >> {{ nodeos_config_dir}}/config.ini
+echo "enable-stale-production = true" >> {{ nodeos_config_dir}}/config.ini
+echo "private-key = [\"$2\",\"$3\"]" >> {{ nodeos_config_dir}}/config.ini
+
+echo "Removing old nodeos data (you might be asked for your sudo password)..."
+sudo rm -rf {{ nodeos_data_dir }}/blocks
+sudo rm -rf {{ nodeos_data_dir }}/shared_memory
+
+echo "Running 'nodeos'"
+#docker run -ti --rm --detach --name nodeos-bios \
+#       -v `pwd`:/etc/nodeos -v /tmp/nodeos-data:/data \
+#       -p 8888:8888 -p 9876:9876 \
+#       eosio/eos:dawn3x \
+#       /opt/eosio/bin/nodeos --data-dir=/data \
+#                             --genesis-json=/etc/nodeos/genesis.json \
+#                             --config-dir=/etc/nodeos
+
+sudo service nodeos start
+
+echo ""
+echo "   View logs with: tail -f {{ eosio_log_dir }}"
+echo ""
+
+echo "Waiting for nodeos to launch"
+sleep 3

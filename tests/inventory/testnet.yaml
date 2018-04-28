@@ -3,179 +3,97 @@ localhost:
   hosts:
     localhost:
 
+#bios:
+#  vars:
+#    pub_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
+#    priv_key: 5Kcofxnnmhv7j2EzPM4pGwB7Fkt9zqSfdBRAacht13WkRP4JQ6V
+
 bios:
-  vars:
-    bios_pub_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
-    bios_priv_key: 5Kcofxnnmhv7j2EzPM4pGwB7Fkt9zqSfdBRAacht13WkRP4JQ6V
+  hosts:
+    eosme:
+      pub_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
+      priv_key: 5Kkn1724evoqNhZ2rJZf74LaDkDwCZ2jDbyi45eW6zi37FD6ozq
+      #bios_pub_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
+      #bios_priv_key: 5Kcofxnnmhv7j2EzPM4pGwB7Fkt9zqSfdBRAacht13WkRP4JQ6V
 
 producers:
-  children:
+  hosts:
     eosme:
+      pub_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
+      priv_key: 5Kkn1724evoqNhZ2rJZf74LaDkDwCZ2jDbyi45eW6zi37FD6ozq
     eosnh:
+      pub_key: EOS8fSM4HSohcVy2AaKP65E36j2rJsZNAcc5GhrrP2bb8DSi1gYDq
+      priv_key: 5KJtNY4DQQ2osu7m7ATJGkQ7c3jmNFQ76SyosyYuY4z5ZGzwdMr
     eosvt:
-    eosri:
-    eosct:
-    eosny:
-    eospa:
-    eosnj:
-    eosde:
-    eosmd:
-    eosva:
-    eosnc:
-    eossc:
-    eosga:
-    eosfl:
-    eosal:
-    eostn:
-    eosky:
-    eoswv:
-    eosoh:
-    eosmi:
+      pub_key: EOS6tQst4P393PdwauhdmuRfjibiSQuWkiHfJY6YsFTBj1AY7HSFF
+      priv_key: 5KivBJEtAquUiFUmBupgPfa9yeLsA7sbmgwgX1omWqoFeyawvEe
+#    eosri:
+#      pub_key: EOS84sXSacSjyn5k4eFaSsE7feUFnEvW7agdpxCt7oz6FowrfzXeU
+#      priv_key: 5KXcaZCTScn8mcQMSDw5yZKTwTSHNzXv3GFfCpYyfm3FwAYG4k6
+#    eosct:
+#      pub_key: EOS6YT9BVb1owJfvcYQKrMUjEMJmzw7N7Hn8id8FLn1TPbvudPoAu
+#      priv_key: 5KSz5sUFykW1TLpFQHyp9b7NfE95trFcvFW7pa7eWW5Uq48t9RQ
+#    eosny:
+#      pub_key: EOS6L3XgX3EHDEb6BCmGQQrKh6aFtyTJvFtAGwMMnb5hPM6mSumvF
+#      priv_key: 5JJBYB9xuumFavypyA1qRSkCtqHDPAVi3765RJoUyHUN5ED1HaT
+#    eospa:
+#      pub_key: EOS5PFNQWXAPnf1UMTrgPQDF2djL4wdQTjSgfkkqHkc5so4Ax5Jqs
+#      priv_key: 5Hzh5QYBfwZ5k23geYKd9CRa1YRCtbMC92drRFn58DDg6hTcUgx
+#    eosnj:
+#      pub_key: EOS6iezTGYmupeBRk1WV8rgcfT7RXvqRcwZYwYBtu5vrQWqmPSu4J
+#      priv_key: 5K4d7YRkDMuyAePTW6XLf2FWmKksqFZv2UJCgopfbL7uV3TKT3R
+#    eosde:
+#      pub_key: EOS8JGUMB4uitRXGAaompBxNATvWjbJksLJwGf8AYTBgHashSXdZL 
+#      priv_key: 5KJAMSzfMZWyYYCRbWsjNKZSoBRY9BXWqwxHMFUqXVcVJpN5WDU
+#    eosmd:
+#      pub_key: EOS6cUzENH5K8eHYs2T7CNBd645CYwKLBLmy2JSTUh8r5mKkgDawk
+#      priv_key: 5KjnpARXy2La5sVDUPLrS9PwDkGmza5PXcGAdB4AAH66W5J1dGX
+#    eosva:
+#      pub_key: EOS6BQbBjJmUT6QpycLfncrmfFMF2Dr2vgW1oiUhQoPtJQvqQnWC1
+#      priv_key: 5JuVnbiRanNMtNhXCxt2iW1knURB5SsShcifks63S5P1wxMXRCy
+#    eosnc:
+#      pub_key: EOS57Y999nXTu53UzS9nKRrLX9Ausd8LhQMRMY6s1tMzdh6rKPsbF
+#      priv_key: 5JBmWVUYGgkSTPRg2Q7eoRgmkV7QA8e7actriRVMJcpgMAZtj5C
+#    eossc:
+#      pub_key: EOS6Tj35hHRy3r5nHxyBfGizENwMi2hkn8MDEzVedREVyYYE4YCXa
+#      priv_key: 5JjkfAKRRwknoF1Ec4uNSFeRVvbA1zxXGcN44DLJmXe2X5kPfs5
+#    eosga:
+#      pub_key: EOS6K8jkQLK9Fyzw8VxujPLZoxaAhE36MXiuKzebG1BCbDn5Eu8Av
+#      priv_key: 5JLmtNLeNDFoYevx8owjZeSh85petm43eHP2Vsksa82N3YVz8HU
+#    eosfl:
+#      pub_key: EOS62u7QEN2EfoVfNFrpZyUJSrC1rDHADhfq71pqzLFVYvoT9A8Ff
+#      priv_key: 5J76kKn7K3fxw9ZezvuYrpJnjcUwoNcCvbhsTY36cNS4trnfrC8
+#    eosal:
+#      pub_key: EOS8AXWU9rr9fDvYKD673ynxeFiLcDSHstiFovAg7ZHs5pe3eem8L
+#      priv_key: 5K6ERXi1xjcbrQxyrEwMtjBUWaEJHuXB1Fsoib8tEJujWtH2Lod
+#    eostn:
+#      pub_key: EOS6ndiVRUcDuuqRvKxQbp8wAU59RZkyzoUVxotVd4ZApdYL1dGfh
+#      priv_key: 5JNwyRfJSoT6EntZn2DTUaixXL3YHbSV2NtLZck5RJZuu35jXdc
+#    eosky:
+#      pub_key: EOS6bywec4d21arZUCVfduwihjtynGLsiUkHXzDrCpyjHbwe7Skkk
+#      priv_key: 5Hzh6HkJ98cizR6rjfgu22fhvpxf9H7ojtV7eSdVK8rRuNpX2Wv
+#    eoswv:
+#      pub_key: EOS6tDA1AFx7ZkLUNM1wCmn6ULSPFLrrYyHxLxnawxBXkLQ2Jkczq
+#      priv_key: 5KHqz6KqBCz9dRkVKmtAGDeGGc1p8Q2E9dfzfXkHGNMkTyoqtNn
+#    eosoh:
+#      pub_key: EOS6fMcAZweWxJzJKyVmoJUyy28tCWYg5cvw9zvhg6ZnYbi3wZ5H4
+#      priv_key: 5J3sBjwwpA8Zp6R4jzNDa6QmWfUPnytZE5sEaAaWfW1iseSKBqK
+#    eosmi:
+#      pub_key: EOS6rc3LWmQHZLhSE1BBCRScUKv1zGvbyCzRJ25izHdhKD8GtyXbD
+#      priv_key: 5KTDQ5mBXyRjUpnURPsWyJ1qkrPyiBvcXTmiEdftsEicZWHqRoT
+    
 
-eosme:
+#####################
+## Testers
+#####################
+
+testers :
   hosts:
-    eosme:
+    eostest1
   vars:
-    pub_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
-    priv_key: 5Kkn1724evoqNhZ2rJZf74LaDkDwCZ2jDbyi45eW6zi37FD6ozq
-    
-eosnh:
-  hosts:
-    eosnh:
-  vars:
-    pub_key: EOS8fSM4HSohcVy2AaKP65E36j2rJsZNAcc5GhrrP2bb8DSi1gYDq
-    priv_key: 5KJtNY4DQQ2osu7m7ATJGkQ7c3jmNFQ76SyosyYuY4z5ZGzwdMr
-    
-eosvt:
-  hosts:
-    eosvt:
-  vars:
-    pub_key: EOS6tQst4P393PdwauhdmuRfjibiSQuWkiHfJY6YsFTBj1AY7HSFF
-    priv_key: 5KivBJEtAquUiFUmBupgPfa9yeLsA7sbmgwgX1omWqoFeyawvEe
-    
-eosri:
-  hosts:
-    eosri:
-  vars:
-    pub_key: EOS84sXSacSjyn5k4eFaSsE7feUFnEvW7agdpxCt7oz6FowrfzXeU
-    priv_key: 5KXcaZCTScn8mcQMSDw5yZKTwTSHNzXv3GFfCpYyfm3FwAYG4k6
-    
-eosct:
-  hosts:
-    eosct:
-  vars:
-    pub_key: EOS6YT9BVb1owJfvcYQKrMUjEMJmzw7N7Hn8id8FLn1TPbvudPoAu
-    priv_key: 5KSz5sUFykW1TLpFQHyp9b7NfE95trFcvFW7pa7eWW5Uq48t9RQ
-    
-eosny:
-  hosts:
-    eosny:
-  vars:
-    pub_key: EOS6L3XgX3EHDEb6BCmGQQrKh6aFtyTJvFtAGwMMnb5hPM6mSumvF
-    priv_key: 5JJBYB9xuumFavypyA1qRSkCtqHDPAVi3765RJoUyHUN5ED1HaT
-    
-eospa:
-  hosts:
-    eospa:
-  vars:
-    pub_key: EOS5PFNQWXAPnf1UMTrgPQDF2djL4wdQTjSgfkkqHkc5so4Ax5Jqs
-    priv_key: 5Hzh5QYBfwZ5k23geYKd9CRa1YRCtbMC92drRFn58DDg6hTcUgx
-    
-eosnj:
-  hosts:
-    eosnj:
-  vars:
-    pub_key: EOS6iezTGYmupeBRk1WV8rgcfT7RXvqRcwZYwYBtu5vrQWqmPSu4J
-    priv_key: 5K4d7YRkDMuyAePTW6XLf2FWmKksqFZv2UJCgopfbL7uV3TKT3R
-    
-eosde:
-  hosts:
-    eosde
-  vars:
-    pub_key: EOS8JGUMB4uitRXGAaompBxNATvWjbJksLJwGf8AYTBgHashSXdZL 
-    priv_key: 5KJAMSzfMZWyYYCRbWsjNKZSoBRY9BXWqwxHMFUqXVcVJpN5WDU
-    
-eosmd:
-  hosts:
-    eosmd:
-  vars:
-    pub_key: EOS6cUzENH5K8eHYs2T7CNBd645CYwKLBLmy2JSTUh8r5mKkgDawk
-    priv_key: 5KjnpARXy2La5sVDUPLrS9PwDkGmza5PXcGAdB4AAH66W5J1dGX
-  
-eosva:
-  hosts:
-    eosva:
-  vars:
-    pub_key: EOS6BQbBjJmUT6QpycLfncrmfFMF2Dr2vgW1oiUhQoPtJQvqQnWC1
-    priv_key: 5JuVnbiRanNMtNhXCxt2iW1knURB5SsShcifks63S5P1wxMXRCy
-    
-eosnc:
-  hosts:
-    eosnc:
-  vars:
-    pub_key: EOS57Y999nXTu53UzS9nKRrLX9Ausd8LhQMRMY6s1tMzdh6rKPsbF
-    priv_key: 5JBmWVUYGgkSTPRg2Q7eoRgmkV7QA8e7actriRVMJcpgMAZtj5C
-  
-eossc:
-  hosts:
-    eossc:
-  vars:
-    pub_key: EOS6Tj35hHRy3r5nHxyBfGizENwMi2hkn8MDEzVedREVyYYE4YCXa
-    priv_key: 5JjkfAKRRwknoF1Ec4uNSFeRVvbA1zxXGcN44DLJmXe2X5kPfs5
-  
-eosga:
-  hosts:
-    eosga:
-  vars:
-    pub_key: EOS6K8jkQLK9Fyzw8VxujPLZoxaAhE36MXiuKzebG1BCbDn5Eu8Av
-    priv_key: 5JLmtNLeNDFoYevx8owjZeSh85petm43eHP2Vsksa82N3YVz8HU
-    
-eosfl:
-  hosts:
-    eosfl:
-  vars:
-    pub_key: EOS62u7QEN2EfoVfNFrpZyUJSrC1rDHADhfq71pqzLFVYvoT9A8Ff
-    priv_key: 5J76kKn7K3fxw9ZezvuYrpJnjcUwoNcCvbhsTY36cNS4trnfrC8
-    
-eosal:
-  hosts:
-    eosal:
-  vars:
-    pub_key: EOS8AXWU9rr9fDvYKD673ynxeFiLcDSHstiFovAg7ZHs5pe3eem8L
-    priv_key: 5K6ERXi1xjcbrQxyrEwMtjBUWaEJHuXB1Fsoib8tEJujWtH2Lod
-    
-eostn:
-  hosts:
-    eostn:
-  vars:
-    pub_key: EOS6ndiVRUcDuuqRvKxQbp8wAU59RZkyzoUVxotVd4ZApdYL1dGfh
-    priv_key: 5JNwyRfJSoT6EntZn2DTUaixXL3YHbSV2NtLZck5RJZuu35jXdc
-    
-eosky:
-  hosts:
-    eosky:
-  vars:
-    pub_key: EOS6bywec4d21arZUCVfduwihjtynGLsiUkHXzDrCpyjHbwe7Skkk
-    priv_key: 5Hzh6HkJ98cizR6rjfgu22fhvpxf9H7ojtV7eSdVK8rRuNpX2Wv
-    
-eoswv:
-  hosts:
-    eoswv:
-  vars:
-    pub_key: EOS6tDA1AFx7ZkLUNM1wCmn6ULSPFLrrYyHxLxnawxBXkLQ2Jkczq
-    priv_key: 5KHqz6KqBCz9dRkVKmtAGDeGGc1p8Q2E9dfzfXkHGNMkTyoqtNn
-    
-eosoh:
-  hosts:
-    eosoh:
-  vars:
-    pub_key: EOS6fMcAZweWxJzJKyVmoJUyy28tCWYg5cvw9zvhg6ZnYbi3wZ5H4
-    priv_key: 5J3sBjwwpA8Zp6R4jzNDa6QmWfUPnytZE5sEaAaWfW1iseSKBqK
-    
-eosmi:
-  hosts:
-    eosmi:
-  vars:
-    pub_key: EOS6rc3LWmQHZLhSE1BBCRScUKv1zGvbyCzRJ25izHdhKD8GtyXbD
-    priv_key: 5KTDQ5mBXyRjUpnURPsWyJ1qkrPyiBvcXTmiEdftsEicZWHqRoT
+    bios_pub_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
+
+#####################
+## Producers
+#####################
     

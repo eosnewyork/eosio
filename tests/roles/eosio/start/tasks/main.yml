@@ -3,7 +3,7 @@
   service:
     name: nodeos
     enabled: yes
-    state: started
+    state: restarted
 
 - name: wait for nodeos to start and produce
   wait_for:

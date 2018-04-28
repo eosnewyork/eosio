@@ -20,7 +20,6 @@
 
 - name: Add host to groupname
   add_host:
-    hostname: "{{ item.public_ip }}"
+    hostname: "{{ item.name }}"
     groups: "{{ group_name }}"
   loop: "{{ gce.instance_data }}"
-

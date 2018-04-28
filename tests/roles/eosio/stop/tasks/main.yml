@@ -1,0 +1,20 @@
+
+- name: stop nodeos
+  service:
+    name: nodeos
+    enabled: yes
+    state: stopped
+
+- name: wait for nodeos to stop
+  wait_for:
+    timeout=5
+  delegate_to: localhost
+
+- name: tail nodeos log file
+  command: tail {{ nodeos_log_file }}
+  register: nodeos_log
+
+- name: verify node is stopped
+  debug:
+    msg: "{{ nodeos_log.stdout_lines | quote }}"
+

@@ -8,10 +8,7 @@
     machine_type: n1-standard-4
     image: ubuntu-1604-xenial-v20180418
     ansible_python_interpreter: /opt/ansible/bin/python
-    service_account_email: ansible@eosny-194919.iam.gserviceaccount.com
-    credentials_file: /home/deck/ansible/account/eosny-b939b94220f8.json
-    project_id: eosny-194919
-    group_name: bios
+    group_name: eosme
     metadata: '{}'
     gce_zone: us-east1-b
     disk_size: 32
@@ -27,11 +24,15 @@
     # eos information
     eosio_github: https://github.com/EOSIO/eos
     eosio_version: 3.0.0-0
+    # bios information
+    discovery_url: https://raw.githubusercontent.com/eosnewyork/eosio/master/bios/eosnewyork-testnet.yaml
+    eosio_bios_version: 0.3.5
+    eosio_bios_dir: "{{ nodeos_config_dir }}/eos-bios"
     # eosio
     eosio_user: eosio
     eosio_group: eosio
-    eosio_pub_key: '{{ bios_pub_key }}'
-    eosio_priv_key: '{{ bios_priv_key }}'
+    eosio_pub_key: '{{ pub_key }}'
+    eosio_priv_key: '{{ priv_key }}'
     eosio_log_dir: /var/log/eosio
     eosio_lib_dir: /var/lib/eosio
     eosio_home_opt: /home/{{ eosio_user }}/opt
@@ -47,17 +48,125 @@
     nodeos_spool_dir: /var/spool/nodeos
     nodeos_pid_file: nodeos.pid
     nodeos_log_file: "{{ eosio_log_dir }}/nodeos.log"
-    # keosd
-    keosd_http_port: 8000
     # producer info
-    agent_name: bios
-    producer_name: eosio
-    pub_key: "{{ bios_pub_key }}"
-    priv_key: "{{ bios_priv_key }}"
-    # external libraries information
-    #boost_url: https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
-    #boost_file: 
-    #mongo_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.6.3.tgz
+    #agent_name: eosme
+    #producer_name: eosio
+    agent_name: "{{ ansible_hostname }}"
+    producer_name: "{{ ansible_hostname }}"
+    # keosd
+    keosd_http_port: 8888
+  roles:
+    - roles/eosio/install
+    #- roles/eosio/start
+    - roles/eosio/bios
+
+- name: Create producing node
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tags: produce
+  vars:
+    machine_type: n1-standard-4
+    image: ubuntu-1604-xenial-v20180418
+    ansible_python_interpreter: /opt/ansible/bin/python
+    #service_account_email: ansible@eosny-194919.iam.gserviceaccount.com
+    #credentials_file: /home/deck/ansible/account/eosny-b939b94220f8.json
+    #project_id: eosny-194919
+    group_name: "{{ groups.producers|join(',') }}"
+    metadata: '{}'
+    gce_zone: us-east1-b
+    disk_size: 32
+  roles:
+    - roles/launch_host
+
+- name: create producing node
+  hosts: producers
+  connection: ssh
+  become: True
+  tags: produce
+  vars:
+    # eos information
+    eosio_github: https://github.com/EOSIO/eos
+    eosio_version: 3.0.0-0
+    # eosio
+    eosio_user: eosio
+    eosio_group: eosio
+    eosio_pub_key: 'EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw'
+    #eosio_priv_key: '5Kcofxnnmhv7j2EzPM4pGwB7Fkt9zqSfdBRAacht13WkRP4JQ6V'
+    eosio_log_dir: /var/log/eosio
+    eosio_lib_dir: /var/lib/eosio
+    eosio_home_opt: /home/{{ eosio_user }}/opt
+    eosio_etc_dir: /etc/eosio
+    eosio_etc_node_dir: '{{ eosio_etc_dir }}/node_00'
+    # nodeos information
+    nodeos_p2p_port: 9876
+    nodeos_http_port: 8888
+    nodeos_data_dir: /opt/eosio
+    nodeos_config_dir: /opt/eosio
+    nodeos_script_dir: /opt/eosio
+    nodeos_run_script: "{{ nodeos_script_dir }}/nodeos.sh"
+    nodeos_spool_dir: /var/spool/nodeos
+    nodeos_pid_file: nodeos.pid
+    nodeos_log_file: "{{ eosio_log_dir }}/nodeos.log"
+    # producer info
+    agent_name: "{{ ansible_hostname }}"
+    producer_name: "{{ ansible_hostname }}"
+    # keosd
+    keosd_http_port: 8888
   roles:
     - roles/eosio/install
     - roles/eosio/start
+
+- name: Create testing nodes
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tags: testers
+  vars:
+    machine_type: n1-standard-4
+    image: ubuntu-1604-xenial-v20180418
+    ansible_python_interpreter: /opt/ansible/bin/python
+    group_name: "{{ groups.testers|join(',') }}"
+    metadata: '{}'
+    gce_zone: us-east1-b
+    disk_size: 32
+  roles:
+    - roles/launch_host
+
+- name: create testing node
+  hosts: testers
+  connection: ssh
+  become: True
+  tags: testers
+  vars:
+    # eos information
+    eosio_github: https://github.com/EOSIO/eos
+    eosio_version: 3.0.0-0
+    # eosio
+    eosio_user: eosio
+    eosio_group: eosio
+    eosio_pub_key: 'EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw'
+    eosio_log_dir: /var/log/eosio
+    eosio_lib_dir: /var/lib/eosio
+    eosio_home_opt: /home/{{ eosio_user }}/opt
+    eosio_etc_dir: /etc/eosio
+    eosio_etc_node_dir: '{{ eosio_etc_dir }}/node_00'
+    # nodeos information
+    nodeos_p2p_port: 9876
+    nodeos_http_port: 8888
+    nodeos_data_dir: /opt/eosio
+    nodeos_config_dir: /opt/eosio
+    nodeos_script_dir: /opt/eosio
+    nodeos_run_script: "{{ nodeos_script_dir }}/nodeos.sh"
+    nodeos_spool_dir: /var/spool/nodeos
+    nodeos_pid_file: nodeos.pid
+    nodeos_log_file: "{{ eosio_log_dir }}/nodeos.log"
+    # producer info
+    agent_name: "{{ ansible_hostname }}"
+    producer_name: "{{ ansible_hostname }}"
+    #pub_key: "{{ host_pub_key }}"
+    #priv_key: "{{ host_priv_key }}"
+    # keosd
+    keosd_http_port: 8888
+  roles:
+    - roles/eosio/install

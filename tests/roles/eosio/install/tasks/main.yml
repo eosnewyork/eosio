@@ -14,13 +14,13 @@
     uid: 115
     group: "{{ eosio_group }}"
 
-#- name: add {{ eosio_group }} to sudoers
-#  lineinfile:
-#    dest: /etc/sudoers
-#    state: present
-#    regexp: '^{{ eosio_group }}'
-#    line: '%{{ eosio_group }} ALL=(ALL) NOPASSWD: ALL'
-#    validate: visudo -cf %s
+- name: add {{ eosio_group }} to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ eosio_group }}'
+    line: '%{{ eosio_group }} ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
 
 - name: create various dir
   file:
@@ -73,12 +73,12 @@
     - supervisor
     
 
-- name: install genesis file
-  template:
-    src: eosio/genesis.json.j2
-    dest: "{{ nodeos_data_dir }}/genesis.json"
-    mode: 0700
-    owner: "{{ eosio_user }}"
+#- name: install genesis file
+#  template:
+#    src: eosio/genesis.json.j2
+#    dest: "{{ nodeos_data_dir }}/genesis.json"
+#    mode: 0700
+#    owner: "{{ eosio_user }}"
 
 - name: install config file
   template:
@@ -86,6 +86,10 @@
     dest: "{{ nodeos_data_dir }}/config.ini"
     mode: 0700
     owner: "{{ eosio_user }}"
+
+- name: debug key
+  debug:
+    msg: "{{ pub_key }}"
 
 - name: add scripts
   template:

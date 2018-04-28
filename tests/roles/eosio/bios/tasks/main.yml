@@ -1,0 +1,84 @@
+
+- name: Install go
+  unarchive:
+    remote_src: yes
+    src: https://dl.google.com/go/go1.10.1.linux-amd64.tar.gz
+    dest: /usr/local
+
+- name: Add to /etc/profile
+  lineinfile:
+    path: /etc/profile
+    state: present
+    line: PATH=/usr/local/go/bin:$PATH
+    regexp: "^PATH=/usr/local/go/bin:$PATH"
+
+- name: create {{ eosio_bios_dir }}
+  file:
+    path: "{{ eosio_bios_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ eosio_user }}"
+    group: "{{ eosio_group }}"
+
+- name: unarchive bios tarball
+  unarchive:
+    remote_src: yes
+    src: https://github.com/eoscanada/eos-bios/releases/download/v{{ eosio_bios_version }}/eos-bios_{{ eosio_bios_version }}_linux_x86_64.tar.gz
+    dest: "{{ eosio_bios_dir }}"
+
+- name: copy config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ eosio_bios_dir }}/{{ item | basename|regex_replace('\\.j2','') }}"
+  with_fileglob:
+    - ../templates/eosio/*.j2
+
+#- name: copy boot_chain.sh
+#  template:
+#    src: scripts/boot_chain.sh.j2
+#    dest: "{{ nodeos_config_dir }}/boot_chain.sh"
+#    owner: "{{ eosio_user }}"
+#    mode: 0755
+
+#- name: copy producers.csv
+#  template:
+#    src: producers.csv.j2
+#    dest: "{{ nodeos_config_dir }}/producers.csv"
+
+#- name: copy eosio.bios
+#  copy:
+#    src: contracts
+#    dest: "{{ eosio_etc_dir }}"
+
+#- name: create wallet
+#  become: "{{ eosio_user }}"
+#  command: cleos wallet create
+#  register: wallet_output
+#  ignore_errors: yes
+
+#- name: output of wallet
+#  debug:
+#    msg: "{{ wallet_output }}"
+
+#- name: get wallet output
+  
+#- name: import private key
+#  become: "{{ eosio_user }}"
+#  command: cleos wallet import {{ bios_priv_key }}
+#  register: privkey_output
+#  ignore_errors: yes
+
+#- name: output of wallet
+#  debug:
+#    msg: "{{ privkey_output }}"
+
+#- name: run boot_chain.sh
+#  become: "{{ eosio_user }}" 
+#  command: bash boot_chain.sh
+#  args:
+#    chdir: "{{ nodeos_config_dir }}"
+#  register: boot_log
+
+#- name: output of boot
+#  debug:
+#    msg: "{{ boot_log.stdout_lines|list }}"
