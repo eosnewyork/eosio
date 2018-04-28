@@ -30,12 +30,12 @@ eosio_initial_authority:  # To be injected in a newly created network where you 
   owner:
     threshold: 1
     keys: 
-    - public_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
+    - public_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
       weight: 1
   active:
     threshold: 1
     keys:
-    - public_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
+    - public_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
       weight: 1
 
 # The following one is used by the boot to setup the initial appointed
