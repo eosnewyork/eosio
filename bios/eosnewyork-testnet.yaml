@@ -20,8 +20,8 @@ social_keybase: https://keybase.io/d3ck  # Potentially used for
 #pgp_public_key:
 
 
-eosio_account_name: eosnewyork  # The account you go by
-eosio_p2p: bp.eosnewyork.io:9876  # This could be hidden until
+eosio_account_name: eosme  # The account you go by
+eosio_p2p: eosme:9876  # This could be hidden until
                                      # after launch.  You will have it
                                      # in your local configuration.
 eosio_http: http://test.eosnewyork.io:8888
