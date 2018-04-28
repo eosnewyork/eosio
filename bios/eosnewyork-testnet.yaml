@@ -42,7 +42,7 @@ eosio_initial_authority:  # To be injected in a newly created network where you 
 # block producer's signing key.  It is not used elsewhere. If you
 # don't think you'll ever be an Appointed Block Producer, you can
 # ignore this line.
-eosio_appointed_block_producer_signing_key: EOS5mAjRhv4NxRV3CMit7q5aUU9bDrHXz2zKRqkoy85mxait79uP3
+eosio_appointed_block_producer_signing_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
 
 website: "https://eosnewyork.io"
 introduction_post_url: "https://steemit.com/eosnewyork/@eosnewyork/we-are-eos-new-york-an-introduction"  # Like your BP candidacy proposal.
