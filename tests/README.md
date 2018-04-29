@@ -23,7 +23,7 @@ git clone https://github.com/eosnewyork/eosio
 sudo mkdir /opt/ansible
 virtualenv /opt/ansible
 source /opt/ansible/bin/ansible
-pip install ansible
+pip install ansible apache-libcloud pycrypto
 ```
 
 3. Run the ansible command to create the bios node.

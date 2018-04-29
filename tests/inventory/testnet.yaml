@@ -10,11 +10,9 @@ localhost:
 
 bios:
   hosts:
-    eosme:
-      pub_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
-      priv_key: 5Kkn1724evoqNhZ2rJZf74LaDkDwCZ2jDbyi45eW6zi37FD6ozq
-      #bios_pub_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
-      #bios_priv_key: 5Kcofxnnmhv7j2EzPM4pGwB7Fkt9zqSfdBRAacht13WkRP4JQ6V
+    bootnode:
+      pub_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
+      priv_key: 5JSFcEG8Db16PXLzASNWj6CzWfENd2p9cWmjMEL4Px3txGnd87p
 
 producers:
   hosts:
