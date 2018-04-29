@@ -15,6 +15,15 @@
   roles:
     - roles/launch_host
 
+- name: print host vars
+  hosts: bios
+  gather_facts: no
+  connection: local
+  tags: bios
+  tasks:
+    - name: print
+      debug: var=hostvars['bootnode'][gce]
+
 - name: build/Start bios node
   hosts: bios
   connection: ssh

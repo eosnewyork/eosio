@@ -17,6 +17,7 @@ Assumptions:
 ```
 cd ~
 git clone https://github.com/eosnewyork/eosio
+cd eosio/tests
 ```
 2. Create virtualenv for ansible
 ```
@@ -28,7 +29,7 @@ pip install ansible apache-libcloud pycrypto
 
 3. Run the ansible command to create the bios node.
 ```
-ansible-playbook playbooks/testnet.yaml -i inventory/testnet.yaml --tags "bios" -e '{"service_account_email": "{YOUR_ACCT_EMAIL}", "credentials_file": "{YOUR_CRED_FILE}", "project_id": "{YOUR_PROJ_ID}"}' 
+ansible-playbook playbooks/testnet.yaml -K -i inventory/testnet.yaml --tags "bios" -e '{"service_account_email": "{YOUR_ACCT_EMAIL}", "credentials_file": "{YOUR_CRED_FILE}", "project_id": "{YOUR_PROJ_ID}"}' 
 ```
 
 4. Login to the **eosme** node and run some commands

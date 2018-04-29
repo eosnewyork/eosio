@@ -23,3 +23,12 @@
     hostname: "{{ item.name }}"
     groups: "{{ group_name }}"
   loop: "{{ gce.instance_data }}"
+
+- name: Add host to /etc/hosts
+  lineinfile: 
+    path: /etc/hosts
+    state: present
+    regexp: '{{ item.name }}$'
+    line: "{{ item.public_ip }}   {{ item.name }}"
+  loop: "{{ gce.instance_data }}"
+  become: yes
