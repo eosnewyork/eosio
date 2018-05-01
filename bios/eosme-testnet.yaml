@@ -20,29 +20,29 @@ social_keybase: https://keybase.io/d3ck  # Potentially used for
 #pgp_public_key:
 
 
-eosio_account_name: bootnode  # The account you go by
-eosio_p2p: bootnode:9876  # This could be hidden until
+eosio_account_name: eosme  # The account you go by
+eosio_p2p: eosme:9876  # This could be hidden until
                                      # after launch.  You will have it
                                      # in your local configuration.
-eosio_http: http://test.eosnewyork.io:8888
-eosio_https: https://test.eosnewyork.io
+eosio_http: eosme:8888
+eosio_https: eosme:443
 eosio_initial_authority:  # To be injected in a newly created network where you participate.
   owner:
     threshold: 1
     keys: 
-    - public_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
+    - public_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
       weight: 1
   active:
     threshold: 1
     keys:
-    - public_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
+    - public_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
       weight: 1
 
 # The following one is used by the boot to setup the initial appointed
 # block producer's signing key.  It is not used elsewhere. If you
 # don't think you'll ever be an Appointed Block Producer, you can
 # ignore this line.
-eosio_appointed_block_producer_signing_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
+eosio_appointed_block_producer_signing_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
 
 website: "https://eosnewyork.io"
 introduction_post_url: "https://steemit.com/eosnewyork/@eosnewyork/we-are-eos-new-york-an-introduction"  # Like your BP candidacy proposal.

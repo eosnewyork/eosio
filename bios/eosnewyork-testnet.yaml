@@ -24,8 +24,8 @@ eosio_account_name: bootnode  # The account you go by
 eosio_p2p: bootnode:9876  # This could be hidden until
                                      # after launch.  You will have it
                                      # in your local configuration.
-eosio_http: http://test.eosnewyork.io:8888
-eosio_https: https://test.eosnewyork.io
+eosio_http: bootnode:8888
+eosio_https: bootnode:443
 eosio_initial_authority:  # To be injected in a newly created network where you participate.
   owner:
     threshold: 1
