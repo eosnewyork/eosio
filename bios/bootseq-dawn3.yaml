@@ -67,8 +67,8 @@ boot_sequence:
   data:
     TESTNET_TRUNCATE_SNAPSHOT: 5000
 
-#- op: system.setprods
-#  label: Setting the initial Appointed Block Producer schedule
+- op: system.setprods
+  label: Setting the initial Appointed Block Producer schedule
 
 - op: system.setcode
   label: Replacing eosio account from eosio.bios contract to eosio.system
