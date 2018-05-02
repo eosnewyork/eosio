@@ -79,7 +79,7 @@ launch_data:  # `eos-bios` tooling requirement.
   #  weight: 0.0  # Just a link in the network, not vouching for them really.
 
   boot_sequence:
-    hash: e759b58df295456e203bd7d4a267816fe8945a600837272d71c8fb43e40e1061
+    hash: 4ff9eb62da9cfcb15e0419414e901ef366e1d0a9f719f1fd2416d68a4ce6a4cd
     url: https://raw.githubusercontent.com/eosnewyork/eosio/master/bios/bootseq-dawn3.yaml
     comment: ""
 
