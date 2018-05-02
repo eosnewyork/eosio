@@ -57,10 +57,10 @@ boot_sequence:
     amount: 1000000000.0000 EOS
     memo: "Initial issuance"
 
-#- op: producers.create_accounts
-#  label: Creating initial Block Producers accounts
-#  data:
-#    TESTNET_ENRICH_PRODUCERS: true
+- op: producers.create_accounts
+  label: Creating initial Block Producers accounts
+  data:
+    TESTNET_ENRICH_PRODUCERS: true
 
 - op: snapshot.inject
   label: Injecting ERC-20 snapshot balances
