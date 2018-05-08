@@ -73,12 +73,12 @@
     - supervisor
     
 
-#- name: install genesis file
-#  template:
-#    src: eosio/genesis.json.j2
-#    dest: "{{ nodeos_data_dir }}/genesis.json"
-#    mode: 0700
-#    owner: "{{ eosio_user }}"
+- name: install genesis file
+  template:
+    src: eosio/genesis.json.j2
+    dest: "{{ nodeos_data_dir }}/genesis.json"
+    mode: 0700
+    owner: "{{ eosio_user }}"
 
 - name: install config file
   template:

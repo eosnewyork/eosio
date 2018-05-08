@@ -3,40 +3,36 @@ localhost:
   hosts:
     localhost:
 
-#bios:
-#  vars:
-#    pub_key: EOS8coLMqChqVny5eaUbiAZ1LrnyEF6YwfVCvq9maR4emdq6xftcw
-#    priv_key: 5Kcofxnnmhv7j2EzPM4pGwB7Fkt9zqSfdBRAacht13WkRP4JQ6V
-
 bios:
   hosts:
     bootnode:
       pub_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
       priv_key: 5JSFcEG8Db16PXLzASNWj6CzWfENd2p9cWmjMEL4Px3txGnd87p
+    
 
 producers:
   hosts:
     eosme:
-      pub_key: EOS8fmBqQutwGykCx2XTwNQ71Rbbe6NjTtG6CiHDSUTCiFrGoT6Pg
-      priv_key: 5Kkn1724evoqNhZ2rJZf74LaDkDwCZ2jDbyi45eW6zi37FD6ozq
+      pub_key: EOS5tMrfp4Rmwda2gsVivxch6aGmyUnNkXnH9XZqKBE1ubet1UFjk
+      priv_key: 5JrdoiFc5vqSsSXveJAy7UyspsPit2drmHjzhGaC8henGtGxotr
     eosnh:
       pub_key: EOS8fSM4HSohcVy2AaKP65E36j2rJsZNAcc5GhrrP2bb8DSi1gYDq
       priv_key: 5KJtNY4DQQ2osu7m7ATJGkQ7c3jmNFQ76SyosyYuY4z5ZGzwdMr
     eosvt:
       pub_key: EOS6tQst4P393PdwauhdmuRfjibiSQuWkiHfJY6YsFTBj1AY7HSFF
       priv_key: 5KivBJEtAquUiFUmBupgPfa9yeLsA7sbmgwgX1omWqoFeyawvEe
-#    eosri:
-#      pub_key: EOS84sXSacSjyn5k4eFaSsE7feUFnEvW7agdpxCt7oz6FowrfzXeU
-#      priv_key: 5KXcaZCTScn8mcQMSDw5yZKTwTSHNzXv3GFfCpYyfm3FwAYG4k6
-#    eosct:
-#      pub_key: EOS6YT9BVb1owJfvcYQKrMUjEMJmzw7N7Hn8id8FLn1TPbvudPoAu
-#      priv_key: 5KSz5sUFykW1TLpFQHyp9b7NfE95trFcvFW7pa7eWW5Uq48t9RQ
-#    eosny:
-#      pub_key: EOS6L3XgX3EHDEb6BCmGQQrKh6aFtyTJvFtAGwMMnb5hPM6mSumvF
-#      priv_key: 5JJBYB9xuumFavypyA1qRSkCtqHDPAVi3765RJoUyHUN5ED1HaT
-#    eospa:
-#      pub_key: EOS5PFNQWXAPnf1UMTrgPQDF2djL4wdQTjSgfkkqHkc5so4Ax5Jqs
-#      priv_key: 5Hzh5QYBfwZ5k23geYKd9CRa1YRCtbMC92drRFn58DDg6hTcUgx
+    eosri:
+      pub_key: EOS84sXSacSjyn5k4eFaSsE7feUFnEvW7agdpxCt7oz6FowrfzXeU
+      priv_key: 5KXcaZCTScn8mcQMSDw5yZKTwTSHNzXv3GFfCpYyfm3FwAYG4k6
+    eosct:
+      pub_key: EOS6YT9BVb1owJfvcYQKrMUjEMJmzw7N7Hn8id8FLn1TPbvudPoAu
+      priv_key: 5KSz5sUFykW1TLpFQHyp9b7NfE95trFcvFW7pa7eWW5Uq48t9RQ
+    eosny:
+      pub_key: EOS6L3XgX3EHDEb6BCmGQQrKh6aFtyTJvFtAGwMMnb5hPM6mSumvF
+      priv_key: 5JJBYB9xuumFavypyA1qRSkCtqHDPAVi3765RJoUyHUN5ED1HaT
+    eospa:
+      pub_key: EOS5PFNQWXAPnf1UMTrgPQDF2djL4wdQTjSgfkkqHkc5so4Ax5Jqs
+      priv_key: 5Hzh5QYBfwZ5k23geYKd9CRa1YRCtbMC92drRFn58DDg6hTcUgx
 #    eosnj:
 #      pub_key: EOS6iezTGYmupeBRk1WV8rgcfT7RXvqRcwZYwYBtu5vrQWqmPSu4J
 #      priv_key: 5K4d7YRkDMuyAePTW6XLf2FWmKksqFZv2UJCgopfbL7uV3TKT3R

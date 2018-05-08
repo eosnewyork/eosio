@@ -34,7 +34,7 @@ ansible-playbook playbooks/testnet.yaml -K -i inventory/testnet.yaml --tags "bio
 
 4. Login to the **eosme** node and run some commands
 ```
-ssh eosme_public_ip
+ssh bootnode_public_ip
 sudo su eosio
 cd /opt/eosio/eos-bios
 ./eos-bios boot

@@ -1,0 +1,133 @@
+# Canonical reference: /ipns/Qm......[insert your ipfs IPNS ref]
+
+testnet: true  # REQUIRED, one or the other, not both.
+# mainnet: true
+# Marking mainnet=true means we automatically disabling all the TESTNET features in the boot_sequence
+
+email_support: support@example.com
+email_abuse: abuse@example.com
+email_tech: tech@example.com
+
+social_twitter: https://twitter/example
+social_telegram: https://t.me/link
+social_github: https://github.com/exampleorg
+social_youtube: https://youtube.com/example
+social_facebook: ...
+social_slack: ...
+social_wechat: ...
+social_steem: ...
+
+social_keybase: https://keybase.io/exampleuser  # Potentially used for cryptographic
+                                                # operations. Please provide this one
+                                                # if using `eos-bios`
+
+eosio_account_name: example  # The account you go by on the network
+
+eosio_p2p: peering.example.com:9876  # This could be hidden until
+                                     # after launch.  You will have it
+                                     # in your local configuration.
+eosio_http: http://http.example.com:8888
+eosio_https: https://http.example.com
+eosio_initial_authority:  # To be injected in a newly created network where you participate.
+  owner:
+    threshold: 1
+    keys:
+    - public_key: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+      weight: 1
+  active:
+    threshold: 1
+    keys:
+    - public_key: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+      weight: 1
+  recovery:
+    threshold: 1
+    accounts:
+    - permission:
+        actor: eosio
+        permission: active
+      weight: 1
+
+# The following one is used by the BIOS Boot node to hook up initial
+# Appointed Block Producers keys (and potentially other participants
+# in the launch)
+eosio_appointed_block_producer_signing_key: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+
+website: "https://example.com"  # Your main website
+
+introduction_post_url: "https://steemit.com/something/"  # Like your BP candidacy proposal.
+
+organization_name: EOS Example  # Used in different interface to say who you are.
+
+organization_tagline: The example in the EOS space  # For websites that feed from these files.
+
+logo_url_1024: "https://example.com/logo_1024x1024.jpg"
+logo_url_256: "https://example.com/logo_256x256.png"
+
+timezone: Africa/Abidjan  # From https://en.m.wikipedia.org/wiki/List_of_tz_database_time_zones, only non-deprecated ones.
+
+latitude: 27.98785      # For websites displaying maps
+longitude: 86.9250261
+
+# This section is required for an `eos-bios` launch.  It can be
+# omitted by nodes that do not participate in the launch, but still
+# want to have their BP be discoverable.
+launch_data:
+
+  # IMPORTANT:
+  #
+  # other BPs' discovery_link, with whom you're comfortable launching
+  # the network with, you've discussed and think they are competent to
+  # 1) not screw up a launch and, 2) run the network and take good
+  # decisions.
+  #
+  # By tagging along peers, we are effectively creating a
+  # distributed graph.  `eos-bios` will be able to traverse this graph
+  # and create a full portrait of the community, with all information
+  # necessary to automate the steps of network boot.
+  peers:  []
+  # peers:
+  # - discovery_link: /ipns/Qm...
+  #   comment: "EOS Antarctica's Igloo testnet"
+  #   weight: 1.0  # from 0.0 to 1.0, floating point number
+  # - discovery_link: /ipns/QmEOSLAUTRE..........................
+  #   weight: 0.8
+  # - discovery_link: /ipns/Qm................................
+  #   weight: 0.2
+  # - discovery_link: /ipns/Qm................................
+  #   comment: "He just learned what 'ls' was.. but he'll ramp up fast, I'm sure"
+  #   weight: 0.0  # Link him on the network, but not vouching for them.
+
+  # Takes into consideration the snapshot, msig, token, system and bios contracts.
+  boot_sequence: /ipfs/QmYRsQNxAZFvx8djAxKsgurJT1RF47MhAEQ2sLz1MunnXH
+
+  # This one skips the step to set the appointd block producers,
+  #leaving `eosio` to produce all the time.  This is great for local
+  #development.
+  #boot_sequence: /ipfs/QmVoz3u3N6hYTktit2npTMdXkzWey5gknY9MWoeNB8tSrj
+
+  # Built by Robert on that infrastructure, in this context, etc...
+  snapshot: /ipfs/QmY4iHQYoqUZ6e1iqFGqYYLzYWiYjy3zFLoMhG9PvSsrSD
+
+  # snapshot_unregistered:
+
+  contracts:
+    eosio.bios:
+      # From github.com/eosio/eos, built from git commit abcdef1234 on Jan 21st 2020, by EOS Antarctica
+      abi: /ipfs/QmbZATGSuN1rwfX4WMHaVHCroZgKwHZjvvEQg93HtcpSk4
+      code: /ipfs/QmVNzTLXSegBdpDxUMrKMVpFBbwnpu2j45iRrFkBtxuQby
+
+    eosio.system:
+      abi: /ipfs/QmPxEwukXL4tsMiqKtGozLUDzrc6ckwcVjgf68YQyGD5Fu
+      code: /ipfs/QmQaMSL54PDxQZZFmXK2TXcV7oHCBocCZ6i4D98CNDSBd8
+
+    eosio.msig:
+      abi: /ipfs/Qmdbo2jFGLH1mBGYTiktpEmizwK4ZVSxjtfh9o38AAQquw
+      code: /ipfs/QmbXo3nTe3obzQdKYqj9pe5Abf1Er5pqtFL2DsVSQKyF4p
+
+    eosio.token:
+      abi: /ipfs/QmZpmcrfWAEUU4KG6hRPrBRTJ2X63sTrQsBRogiKZA7aP6
+      code: /ipfs/QmTe5K1eR8Vbmz4mxEJSGyus9PrHymjL9hX31x1B5pchJT
+
+    # eosio.unregd:
+    #   abi: /ipfs/Qm...
+    #   code: /ipfs/Qm...

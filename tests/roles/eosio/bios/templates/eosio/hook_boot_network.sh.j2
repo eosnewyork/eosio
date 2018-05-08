@@ -18,18 +18,10 @@ echo "enable-stale-production = true" >> {{ nodeos_config_dir}}/config.ini
 echo "private-key = [\"$2\",\"$3\"]" >> {{ nodeos_config_dir}}/config.ini
 
 echo "Removing old nodeos data (you might be asked for your sudo password)..."
-sudo rm -rf {{ nodeos_data_dir }}/blocks
-sudo rm -rf {{ nodeos_data_dir }}/shared_memory
+sudo rm -Rf {{ nodeos_data_dir }}/blocks
+sudo rm -Rf {{ nodeos_data_dir }}/shared_memory
 
 echo "Running 'nodeos'"
-#docker run -ti --rm --detach --name nodeos-bios \
-#       -v `pwd`:/etc/nodeos -v /tmp/nodeos-data:/data \
-#       -p 8888:8888 -p 9876:9876 \
-#       eosio/eos:dawn3x \
-#       /opt/eosio/bin/nodeos --data-dir=/data \
-#                             --genesis-json=/etc/nodeos/genesis.json \
-#                             --config-dir=/etc/nodeos
-
 sudo service nodeos start
 
 echo ""
@@ -37,4 +29,4 @@ echo "   View logs with: tail -f {{ eosio_log_dir }}"
 echo ""
 
 echo "Waiting for nodeos to launch"
-sleep 3
+sleep 10

@@ -73,6 +73,8 @@ agent-name = "{{ agent_name }}"
 
 # Enable block production, even if the chain is stale.
 enable-stale-production = false
+# connect to bootnode
+p2p-peer-address = bootnode:{{ nodeos_p2p_port }}
 {% else %}
 # ID of producer controlled by this node (e.g. inita; may specify multiple times)
 producer-name = {{ producer_name }}

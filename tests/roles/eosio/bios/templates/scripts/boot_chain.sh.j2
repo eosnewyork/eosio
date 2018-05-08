@@ -1,46 +1,15 @@
 #!/bin/bash
 
-CLEOS=cleos
-HOST=localhost
-PORT={{ nodeos_http_port }}
-WALLET_HOST=localhost
-WALLET_PORT={{ keosd_http_port }}
-EOS_BUILD_DIR={{ eosio_etc_dir }}
-EOSIO_KEY={{ bios_pub_key }}
+#cd {{ eosio_bios_dir }}
+#pwd
 
-$CLEOS -H $HOST -p $PORT --wallet-host $WALLET_HOST --wallet-port $WALLET_PORT set contract eosio $EOS_BUILD_DIR/contracts/eosio.bios/ -p eosio
+#./eos-bios --use-cache boot
 
-PRODUCERS_JSON='{"version":1,"producers":['
-while read -r line
-do
-    	a=(${line//,/ })
-    	name="${a[0]}"
-    	key="${a[1]}"
-
-        $CLEOS -H $HOST -p $PORT --wallet-host $WALLET_HOST --wallet-port $WALLET_PORT create account eosio $name $key $key
-        PRODUCERS_JSON="$PRODUCERS_JSON{\"producer_name\":\"$name\",\"block_signing_key\":\"$key\"}"
-
-done < "producers.csv"
+#echo "Would have run:"
+#echo "./eos-bios join"
 
 
-
-PRODUCERS_JSON="$PRODUCERS_JSON,{\"producer_name\":\"eosio\",\"block_signing_key\":\"$EOSIO_KEY\"}]}"
-
-echo $PRODUCERS_JSON
-
-$CLEOS -H $HOST -p $PORT --wallet-host $WALLET_HOST --wallet-port $WALLET_PORT push action eosio setprods "$PRODUCERS_JSON" -p eosio
-
-$CLEOS -H $HOST -p $PORT --wallet-host $WALLET_HOST --wallet-port $WALLET_PORT set contract eosio $EOS_BUILD_DIR/contracts/eosio.system/ -p eosio
-
-$CLEOS -H $HOST -p $PORT --wallet-host $WALLET_HOST --wallet-port $WALLET_PORT push action eosio issue '{"to":"eosio", "quantity":"1000000000.0000 EOS"}' -p eosio@active
-
-while read -r line
-do
-    	a=(${line//,/ })
-    	name="${a[0]}"
-    	key="${a[1]}"
-
-	$CLEOS -H $HOST -p $PORT --wallet-host $WALLET_HOST --wallet-port $WALLET_PORT transfer eosio $name 1000000.0000 "\"fund superhero $name\"";
-done < "producers.csv"
-
-exit 0
+{% for host in groups['producers'] -%}
+cleos create account eosio {{ host }} {{ hostvars[host]['pub_key'] }} {{ hostvars[host]['pub_key'] }}
+cleos push action eosio setprods '{ "version": "042918","producers": [{"producer_name":"{{ host }}","block_signing_key":"{{ hostvars[host]['pub_key'] }}"}] }' -p eosio 
+{% endfor -%}

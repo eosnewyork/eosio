@@ -1,0 +1,1 @@
+/opt/rh/devtoolset-7/root/usr/bin/g++   -Wall -fno-builtin-memcmp -O3 -DNDEBUG   CMakeFiles/eosio.bios.tmp.dir/eosio.bios.cpp.o  -o eosio.bios.tmp 

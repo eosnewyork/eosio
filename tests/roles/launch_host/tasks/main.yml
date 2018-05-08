@@ -5,30 +5,38 @@
     service_account_email: "{{ service_account_email }}"
     credentials_file: "{{ credentials_file }}"
     project_id: "{{ project_id }}"
-    instance_names: "{{ group_name }}"
+    instance_names: "{{ item }}"
     machine_type: "{{ machine_type }}"
     image: "{{ image }}"
     metadata: "{{ metadata }}"
     zone: "{{ gce_zone }}"
     disk_size: "{{ disk_size }}"
     persistent_boot_disk: True
-  register: gce
+  register: "gce"
+  with_items: "{{ host_list }}"
+
+- name: Output gce
+  debug:
+    msg: "{{ item.instance_data }}"
+  with_items: "{{ gce.results }}"
 
 - name: Wait for SSH to come up
-  wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=60
-  loop: "{{ gce.instance_data }}"
+  wait_for: host={{ item.instance_data[0].public_ip }} port=22 delay=10 timeout=60
+  with_items: "{{ gce.results }}"
 
-- name: Add host to groupname
-  add_host:
-    hostname: "{{ item.name }}"
-    groups: "{{ group_name }}"
-  loop: "{{ gce.instance_data }}"
+#- name: Add host to groupname
+#  add_host:
+#    hostname: "{{ item.instance_data[0].name }}"
+#    groups: "{{ group_name }}"
+#  #loop: "{{ gce.instance_data }}"
+#  with_items: "{{ gce.results }}"
 
 - name: Add host to /etc/hosts
   lineinfile: 
     path: /etc/hosts
     state: present
-    regexp: '{{ item.name }}$'
-    line: "{{ item.public_ip }}   {{ item.name }}"
-  loop: "{{ gce.instance_data }}"
+    regexp: '{{ item.instance_data[0].name }}$'
+    line: "{{ item.instance_data[0].public_ip }}   {{ item.instance_data[0].name }}"
+  #loop: "{{ gce.instance_data }}"
+  with_items: "{{ gce.results }}"
   become: yes
