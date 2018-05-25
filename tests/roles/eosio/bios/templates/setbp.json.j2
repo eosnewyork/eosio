@@ -1,0 +1,14 @@
+{
+    "schedule" : [
+        {% for host in groups['prod_us'] -%}
+        {
+            "producer_name":"{{ host }}",
+            "block_signing_key" : "{{ hostvars[host]['pub_key'] }}"
+        },
+        {% endfor -%}
+        {
+            "producer_name":"eosio",
+            "block_signing_key" : "{{ pub_key }}"
+        }
+    ]
+}

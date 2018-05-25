@@ -1,0 +1,15 @@
+[Unit]
+Description=keosd service
+After=syslog.target network.target
+
+[Service]
+User={{ eosio_user }}
+Type=forking
+PIDFile={{ keosd_spool_dir }}/{{ keosd_pid_file }}
+# EnvironmentFile = 
+ExecStart={{ keosd_run_script }} start
+ExecReload={{ keosd_run_script }} restart
+ExecStop={{ keosd_run_script }} stop
+
+[Install]
+WantedBy=multi-user.target

@@ -1,4 +1,8 @@
 
+########################
+# start nodeos
+########################
+
 - name: enable and start nodeos
   service:
     name: nodeos
@@ -18,3 +22,26 @@
   debug:
     msg: "{{ nodeos_log.stdout_lines | quote }}"
 
+
+########################
+# start keosd
+########################
+
+- name: enable and start keosd
+  service:
+    name: keosd
+    enabled: yes
+    state: restarted
+
+- name: wait for keosd to start and produce
+  wait_for:
+    timeout=5
+  delegate_to: localhost
+
+- name: tail keosd log file
+  command: tail {{ keosd_log_file }}
+  register: keosd_log
+
+- name: verify keosd is producing
+  debug:
+    msg: "{{ keosd_log.stdout_lines | quote }}"

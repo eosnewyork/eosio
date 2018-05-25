@@ -38,6 +38,8 @@
     - "{{ nodeos_config_dir }}"
     - "{{ nodeos_script_dir }}"
     - "{{ nodeos_spool_dir }}"
+    - "{{ keosd_config_dir }}"
+    - "{{ keosd_spool_dir }}"
 
 # this is used to ensure eos cpack installs correctly.
 # this will be replaced soon
@@ -48,30 +50,7 @@
     state: link
     force: yes
   with_items:
-    - nodeos
-
-- name: install dependencies
-  apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - clang-4.0
-    - lldb-4.0
-    - libclang-4.0-dev
-    - libssl-dev
-    - cmake
-    - libbz2-dev
-    - libgmp3-dev
-    - autotools-dev
-    - libbz2-dev
-    - libicu-dev
-    - python3-dev
-    - autoconf
-    - libtool
-    - build-essential
-    - doxygen
-    - supervisor
-    
+    - nodeos  
 
 - name: install genesis file
   template:
@@ -80,18 +59,31 @@
     mode: 0700
     owner: "{{ eosio_user }}"
 
-- name: install config file
+- name: add cleos scripts
   template:
-    src: eosio/config.ini.j2
-    dest: "{{ nodeos_data_dir }}/config.ini"
+    src: scripts/cleos.sh.j2
+    dest: "{{ nodeos_script_dir }}/cleos.sh"
+    owner: "{{ eosio_user }}"
+    mode: 0755
+
+###################
+# Install nodeos
+###################
+
+- name: install config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ nodeos_data_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
     mode: 0700
     owner: "{{ eosio_user }}"
+  with_fileglob:
+    - ../templates/eosio/*.j2
 
 - name: debug key
   debug:
     msg: "{{ pub_key }}"
 
-- name: add scripts
+- name: add nodeos scripts
   template:
     src: scripts/nodeos.sh.j2
     dest: "{{ nodeos_script_dir }}/nodeos.sh"
@@ -104,6 +96,32 @@
     dest: /etc/systemd/system/nodeos.service
     mode: 0644
 
+#################
+# Install keosd
+#################
+
+- name: install keosd config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ keosd_config_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
+    mode: 0700
+    owner: "{{ eosio_user }}"
+  with_fileglob:
+    - ../templates/eosio/keosd/*.j2
+
+- name: add keosd scripts
+  template:
+    src: scripts/keosd.sh.j2
+    dest: "{{ keosd_script_dir }}/keosd.sh"
+    owner: "{{ eosio_user }}"
+    mode: 0700
+
+- name: create keosd service file
+  template:
+    src: systemd/keosd.service.j2
+    dest: /etc/systemd/system/keosd.service
+    mode: 0644
+
 - name: copy deb file
   copy:
     src: eos.io_{{ eosio_version }}_amd64.deb
@@ -113,4 +131,3 @@
   apt:
     deb: /tmp/eos.io_{{ eosio_version }}_amd64.deb
   ignore_errors: yes
-

@@ -1,4 +1,3 @@
-
 - name: Create bios node
   hosts: localhost
   gather_facts: no
@@ -10,10 +9,10 @@
     ansible_python_interpreter: /opt/ansible/bin/python
     host_list:
       - bootnode
-    #group_name: bootnode
     metadata: '{}'
-    gce_zone: us-east1-b
-    disk_size: 32
+    gce_zone: us-central1-a
+    instance_tags: bootnode
+    disk_size: 10
   roles:
     - roles/launch_host
 
@@ -24,12 +23,8 @@
   tags: bios
   vars:
     # eos information
-    eosio_github: https://github.com/EOSIO/eos
-    eosio_version: 3.0.0-1
-    # bios information
-    discovery_url: https://d3ck.keybase.pub/{{ ansible_hostname}}-testnet.yaml
-    eosio_bios_version: 0.4.0
-    eosio_bios_dir: "{{ nodeos_config_dir }}/eos-bios"
+    #eosio_github: https://github.com/EOSIO/eos
+    eosio_version: 4.1.0-0
     # eosio
     eosio_user: eosio
     eosio_group: eosio
@@ -54,59 +49,50 @@
     producer_name: eosio
     agent_name: "{{ ansible_hostname }}"
     # keosd
-    keosd_http_port: 8888
+    keosd_http_port: 8880
+    keosd_script_dir: "/opt/eosio"
+    keosd_run_script: "{{ keosd_script_dir }}/keosd.sh"
+    keosd_data_dir: "/opt/eosio"
+    keosd_config_dir: "{{ nodeos_config_dir }}/keosd"
+    keosd_spool_dir: /var/spool/keosd
+    keosd_pid_file: keosd.pid
+    keosd_log_file: "{{ eosio_log_dir }}/keosd.log"
   roles:
     - roles/eosio/install
     #- roles/eosio/start
     - roles/eosio/bios
 
-- name: Create producing node
+- name: Create producing node - America
   hosts: localhost
   gather_facts: no
   connection: local
   tags: produce
   vars:
-    zone_list: 
-      - us-east1-b
-      - us-east4-a
-      - us-west1-a
-      - us-central1-a
-      - southamerica-east1-a
-      - northamerica-northeast1-a
-      - europe-west1-b
-      - europe-west2-a
-      - europe-west3-a
-      - europe-west4-a
-      - asia-northeast1-a
-      - asia-east1-a
-      - asia-southeast1-a
-      - asia-south1-a
-      - australia-southeast1-a
-    machine_type: n1-standard-4
+    machine_type: n1-standard-2
     image: ubuntu-1604-xenial-v20180418
     ansible_python_interpreter: /opt/ansible/bin/python
-    host_list: "{{ groups.producers }}"
-    #group_name: "{{ item }}"
+    host_list: "{{ groups.prod_us }}"
+    #group_name: "{{ groups.prod_us| join(',' )}}"
     metadata: '{}'
-    gce_zone: "{{ zone_list | random }}"
-    disk_size: 32
+    instance_tags: producers
+    gce_zone: "us-central1-a"
+    disk_size: 10
   roles:
     - roles/launch_host
-  
 
 - name: start producing nodes
   tags: produce
-  hosts: producers
+  hosts: prod_us
   connection: ssh
   become: True
   vars:
     # eos information
-    eosio_github: https://github.com/EOSIO/eos
-    eosio_version: 3.0.0-1
+    #eosio_github: https://github.com/EOSIO/eos
+    eosio_version: 4.1.0-0
     # bios information
-    discovery_url: https://keybase.pub/d3ck/{{ ansible_hostname }}-testnet.yaml
-    eosio_bios_version: 0.4.0
-    eosio_bios_dir: "{{ nodeos_config_dir }}/eos-bios"
+    #discovery_url: https://keybase.pub/d3ck/{{ ansible_hostname }}-testnet.yaml
+    #eosio_bios_version: 0.4.0
+    #eosio_bios_dir: "{{ nodeos_config_dir }}/eos-bios"
     # eosio
     eosio_user: eosio
     eosio_group: eosio
@@ -130,11 +116,18 @@
     agent_name: "{{ ansible_hostname }}"
     producer_name: "{{ ansible_hostname }}"
     # keosd
-    keosd_http_port: 8888
+    keosd_http_port: 8880
+    keosd_script_dir: "/opt/eosio"
+    keosd_run_script: "{{ keosd_script_dir }}/keosd.sh"
+    keosd_data_dir: "/opt/eosio"
+    keosd_config_dir: "{{ nodeos_config_dir }}/keosd"
+    keosd_spool_dir: /var/spool/keosd
+    keosd_pid_file: keosd.pid
+    keosd_log_file: "{{ eosio_log_dir }}/keosd.log"
   roles:
     - roles/eosio/install
-    #- roles/eosio/bios
     - roles/eosio/start
+    #- roles/eosio/voteproducer
 
 - name: Create testing nodes
   tags: testers
@@ -148,7 +141,8 @@
     group_name: "{{ groups.testers|join(',') }}"
     metadata: '{}'
     gce_zone: us-east1-b
-    disk_size: 32
+    instance_tags: tester
+    disk_size: 10
   roles:
     - roles/launch_host
 
@@ -160,7 +154,7 @@
   vars:
     # eos information
     eosio_github: https://github.com/EOSIO/eos
-    eosio_version: 3.0.0-0
+    eosio_version: 4.1.0-0
     # eosio
     eosio_user: eosio
     eosio_group: eosio

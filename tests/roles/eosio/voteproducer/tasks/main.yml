@@ -1,0 +1,28 @@
+- name: create wallet                                                                                  
+  become: "{{ eosio_user }}"                                                                           
+  command: cleos --wallet-url http://localhost:{{ keosd_http_port}} wallet create                      
+  register: wallet_output                                                                              
+  ignore_errors: yes
+  
+- name: output of wallet                                                                               
+  debug:                                                                                               
+    msg: "{{ wallet_output.stdout_lines|list }}" 
+                                                                                                      
+- name: import private key                                                                             
+  become: "{{ eosio_user }}"                                                                           
+  command: cleos --wallet-url http://localhost:{{ keosd_http_port}} wallet import {{ priv_key }} 
+  register: privkey_output                                                                             
+  ignore_errors: yes
+ 
+- name: output of key import     
+  debug:
+    msg: "{{ privkey_output.stdout_lines|list }}"
+
+- name: delegatebw
+  become: "{{ eosio_user }}"
+  command: 'cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} system delegatebw {{ inventory_hostname }} {{ inventory_hostname }} "500000.0000 EOS" "500000.0000 EOS" -p {{ inventory_hostname }}@active'
+
+- name: voteproducer
+  become: "{{ eosio_user }}"
+  command: 'cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} system voteproducer prods {{ inventory_hostname }} {{ play_hosts | join(" ") }} -p {{ inventory_hostname }}@active'
+  

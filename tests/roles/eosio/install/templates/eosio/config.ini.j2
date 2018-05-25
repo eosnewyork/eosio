@@ -58,8 +58,6 @@ p2p-peer-address = {{ hosts }}:{{nodeos_p2p_port }}
 {% endif -%}
 {% endfor -%}
 
-#p2p-peer-address = bios:{{nodeos_p2p_port }}
-
 # ID of producer controlled by this node (e.g. inita; may specify multiple times)
 producer-name = {{ producer_name }}
 # Tuple of [public key, WIF private key] (may specify multiple times)
@@ -109,12 +107,13 @@ network-version-match = 0
 sync-fetch-span = 100
 
 # Percent of producers (0-99) that must be participating in order to produce blocks
-required-participation = 0
+required-participation = 50
 
 # Plugin(s) to enable, may be specified multiple times
 plugin = eosio::producer_plugin
 plugin = eosio::chain_api_plugin
-plugin = eosio::account_history_plugin
-plugin = eosio::account_history_api_plugin
+plugin = eosio::http_plugin
+#plugin = eosio::account_history_plugin
+#plugin = eosio::account_history_api_plugin
 # for now load up the eosio wallet
-plugin = eosio::wallet_api_plugin
+#plugin = eosio::wallet_api_plugin

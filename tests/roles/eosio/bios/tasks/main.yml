@@ -1,46 +1,4 @@
 
-#- name: Install go
-#  unarchive:
-#    remote_src: yes
-#    src: https://dl.google.com/go/go1.10.1.linux-amd64.tar.gz
-#    dest: /usr/local
-
-#- name: Add to /etc/profile
-#  lineinfile:
-#    path: /etc/profile
-#    state: present
-#    line: PATH=/usr/local/go/bin:$PATH
-#    regexp: "^PATH=/usr/local/go/bin:$PATH"
-
-#- name: install docker
-#  apt:
-#    name: docker.io
-#    state: present
-
-#- name: create {{ eosio_bios_dir }}
-#  file:
-#    path: "{{ eosio_bios_dir }}"
-#    state: directory
-#    mode: 0755
-#    owner: "{{ eosio_user }}"
-#    group: "{{ eosio_group }}"
-
-#- name: unarchive bios tarball
-#  unarchive:
-#    remote_src: yes
-#    src: https://github.com/eoscanada/eos-bios/releases/download/v{{ eosio_bios_version }}/eos-bios_{{ eosio_bios_version }}_linux_x86_64.tar.gz
-#    dest: "{{ eosio_bios_dir }}"
-
-#- name: copy config files
-#  template:
-#    src: "{{ item }}"
-#    dest: "{{ eosio_bios_dir }}/{{ item | basename|regex_replace('\\.j2','') }}"
-#    owner: "{{ eosio_user }}"
-#    group: "{{ eosio_group }}"
-#    mode: 0744
-#  with_fileglob:
-#    - ../templates/eosio/*.j2
-
 - name: copy boot_chain.sh
   template:
     src: scripts/boot_chain.sh.j2
@@ -48,15 +6,31 @@
     owner: "{{ eosio_user }}"
     mode: 0755
 
-#- name: get kickstart data
-#  set_fact:
-#    boot_kickstart_data: "{{ boot_out.stdout | regex_search('KICKSTART=(.*)') }}" 
-  
-#- name: print kickstart data
-#  debug:
-#    msg: "{{ boot_kickstart_data }}"
+#- name: copy setbp.json 
+#  template:
+#    src: setbp.json.j2
+#    dest: /tmp/setbp.json
+#    owner: "{{ eosio_user }}"
+#    mode: 0755
 
-- name: start service
+- name: copy boot config
+  template:
+    src: eosio/config.ini.j2
+    dest: "{{ nodeos_config_dir }}/config.ini"
+    owner: "{{ eosio_user }}"
+    mode: 0700
+
+- name: copy contracts
+  copy:
+    src: contracts_{{ eosio_version }}
+    dest: "{{ eosio_etc_dir }}"
+
+- name: start keosd service
+  service:
+    name: keosd
+    state: started
+
+- name: start nodeos service
   service:
     name: nodeos
     state: started
@@ -68,38 +42,25 @@
 
 - name: output of nodeos
   debug:
-    msg: "{{ nodeos_log }}"
-
-- name: copy contracts
-  copy:
-    src: contracts
-    dest: "{{ eosio_etc_dir }}"
+    msg: "{{ nodeos_log.stdout }}"
 
 - name: create wallet
   become: "{{ eosio_user }}"
-  command: cleos wallet create
+  command: cleos --wallet-url http://localhost:{{ keosd_http_port}} wallet create
   register: wallet_output
-  ignore_errors: yes
 
 - name: output of wallet
   debug:
-    msg: "{{ wallet_output }}"
+    msg: "{{ wallet_output.stdout_lines|list }}"
 
-#- name: get wallet output
-  
 - name: import private key
   become: "{{ eosio_user }}"
-  command: cleos wallet import {{ eosio_priv_key }}
+  command: cleos --wallet-url http://localhost:{{ keosd_http_port}} wallet import {{ eosio_priv_key }}
   register: privkey_output
-  ignore_errors: yes
 
-- name: output of wallet
+- name: output of key import
   debug:
-    msg: "{{ privkey_output }}"
-
-- name: 
-  become: "{{ eosio_user }}"
-  command: cleos set contract eosio {{ eosio_etc_dir }}/contracts/eosio.bios -p eosio 
+    msg: "{{ privkey_output.stdout_lines|list }}"
 
 - name: run boot script
   become_user: "{{ eosio_user }}"

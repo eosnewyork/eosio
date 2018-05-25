@@ -1,5 +1,18 @@
 ---
 
+- name: Launching disk
+  gce_pd :
+    service_account_email: "{{ service_account_email }}"
+    credentials_file: "{{ credentials_file }}"
+    project_id: "{{ project_id }}"
+    #delete_on_termination: yes
+    image: "{{ image }}"
+    mode: READ_WRITE
+    name: "{{ item }}"
+    size_gb: "{{ disk_size }}"
+    zone: "{{ gce_zone }}"
+  with_items: "{{ host_list }}"
+
 - name: Launching host
   gce:
     service_account_email: "{{ service_account_email }}"
@@ -10,26 +23,19 @@
     image: "{{ image }}"
     metadata: "{{ metadata }}"
     zone: "{{ gce_zone }}"
-    disk_size: "{{ disk_size }}"
-    persistent_boot_disk: True
+    disks:
+      - "{{ item }}"
+    disk_auto_delete: yes
+    #disk_size: "{{ disk_size }}"
+    #persistent_boot_disk: True
   register: "gce"
   with_items: "{{ host_list }}"
 
-- name: Output gce
-  debug:
-    msg: "{{ item.instance_data }}"
-  with_items: "{{ gce.results }}"
-
 - name: Wait for SSH to come up
   wait_for: host={{ item.instance_data[0].public_ip }} port=22 delay=10 timeout=60
+  #wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=60
   with_items: "{{ gce.results }}"
-
-#- name: Add host to groupname
-#  add_host:
-#    hostname: "{{ item.instance_data[0].name }}"
-#    groups: "{{ group_name }}"
-#  #loop: "{{ gce.instance_data }}"
-#  with_items: "{{ gce.results }}"
+  #loop: "{{ gce.instance_data }}"
 
 - name: Add host to /etc/hosts
   lineinfile: 
@@ -40,3 +46,4 @@
   #loop: "{{ gce.instance_data }}"
   with_items: "{{ gce.results }}"
   become: yes
+
