@@ -40,6 +40,8 @@
     - "{{ nodeos_spool_dir }}"
     - "{{ keosd_config_dir }}"
     - "{{ keosd_spool_dir }}"
+    - "{{ patroneos_config_dir }}"
+    - "{{ patroneos_spool_dir }}"
 
 # this is used to ensure eos cpack installs correctly.
 # this will be replaced soon
@@ -120,6 +122,43 @@
   template:
     src: systemd/keosd.service.j2
     dest: /etc/systemd/system/keosd.service
+    mode: 0644
+
+- name: copy deb file
+  copy:
+    src: eos.io_{{ eosio_version }}_amd64.deb
+    dest: /tmp
+
+#################
+# Install patroneos
+#################
+
+- name: install patroneos config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ patroneos_config_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
+    mode: 0700
+    owner: "{{ eosio_user }}"
+  with_fileglob:
+    - ../templates/eosio/patroneos/*.j2
+
+- name: install patroneosd
+  copy:
+    src: patroneosd_{{ eosio_version }}
+    dest: /usr/local/bin/patroneosd
+    mode: 0755
+    
+- name: add patroneos scripts
+  template:
+    src: scripts/patroneos.sh.j2
+    dest: "{{ patroneos_script_dir }}/patroneos.sh"
+    owner: "{{ eosio_user }}"
+    mode: 0700
+
+- name: create patroneos service file
+  template:
+    src: systemd/patroneos.service.j2
+    dest: /etc/systemd/system/patroneos.service
     mode: 0644
 
 - name: copy deb file

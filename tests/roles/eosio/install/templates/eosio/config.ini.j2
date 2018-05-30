@@ -11,13 +11,29 @@ genesis-json = {{nodeos_data_dir}}/genesis.json
 # genesis-timestamp =
 
 # the location of the block log (absolute path or relative to application data dir)
-block-log-dir = "blocks"
+blocks--dir = "blocks"
+
+# Maximum size (in MB) of the chain state database
+chain-state-db-size-mb = 1024
+
+# Maximum size (in MB) of the reversible blocks database
+reversible-blocks-db-size-mb = 340  # 340 blocks based on 21 producer BFT delay
+
+# print contract's output to console (eosio::chain_plugin)          
+contracts-console = false
+
+# TODO use this for backup
+# Start this node in a state where production is paused (eosio::producer_plugin)                       
+pause-on-startup = false
+
+# Limits the maximum age (in seconds) of the DPOS Irreversible Block for a chain this node will produce blocks on (eosio::producer_plugin)    
+max-irreversible-block-age = 1800
 
 # Pairs of [BLOCK_NUM,BLOCK_ID] that should be enforced as checkpoints.
 # checkpoint =
 
 # Limits the maximum time (in milliseconds) that is allowed a transaction's code to execute from a received block.
-rcvd-block-trans-execution-time = 72
+rcvd-block-trans-execution-time = 30
 
 # Limits the maximum time (in milliseconds) that is allowed a pushed transaction's code to execute.
 trans-execution-time = 18
@@ -52,9 +68,9 @@ access-control-allow-credentials = false
 # The public endpoint of a peer node to connect to. Use multiple p2p-peer-address options as needed to compose a network.
 {% if producer_name != "eosio" -%}
 
-{% for hosts in ansible_play_batch -%}
-{% if hosts != producer_name -%}
-p2p-peer-address = {{ hosts }}:{{nodeos_p2p_port }}
+{% for host in ansible_play_batch -%}
+{% if host != producer_name -%}
+p2p-peer-address = {{ host }}:{{nodeos_p2p_port }}
 {% endif -%}
 {% endfor -%}
 

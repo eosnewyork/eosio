@@ -1,0 +1,18 @@
+{
+    "listenPort": "{{ patroneos_http_port }}",
+
+    "nodeosProtocol": "http",
+    "nodeosUrl": "{{ ansible_hostname }}",
+    "nodeosPort": "{{ nodeos_http_port }}",
+
+    "contractBlackList": {
+        "currency": true
+    },
+    "maxSignatures": 10,
+    "maxTransactionSize": 1000000,
+
+    "logEndpoints": ["http://localhost:{{ patroneos_http_port }}"],
+    "filterEndpoints": ["http://localhost:8081"],
+
+    "logFileLocation": "{{ patroneos_log_file }}"
+}

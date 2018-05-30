@@ -1,43 +1,144 @@
 
 localhost:
-  hosts:
-    localhost:
+  vars:
+    become: yes
 
-bios:
+bootnode:
   hosts:
     bootnode:
       pub_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
       priv_key: 5JSFcEG8Db16PXLzASNWj6CzWfENd2p9cWmjMEL4Px3txGnd87p
+      zone: us-east1-b
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    # eos information
+    #eosio_github: https://github.com/EOSIO/eos
+    eosio_version: 4.2.0-0
+    # eosio
+    eosio_user: eosio
+    eosio_group: eosio
+    eosio_pub_key: '{{ pub_key }}'
+    eosio_priv_key: '{{ priv_key }}'
+    eosio_log_dir: /var/log/eosio
+    eosio_lib_dir: /var/lib/eosio
+    eosio_home_opt: /home/{{ eosio_user }}/opt
+    eosio_etc_dir: /etc/eosio
+    eosio_etc_node_dir: '{{ eosio_etc_dir }}/node_00'
+    # nodeos information
+    nodeos_p2p_port: 9876
+    nodeos_http_port: 8888
+    nodeos_data_dir: /opt/eosio
+    nodeos_config_dir: /opt/eosio
+    nodeos_script_dir: /opt/eosio
+    nodeos_run_script: "{{ nodeos_script_dir }}/nodeos.sh"
+    nodeos_spool_dir: /var/spool/nodeos
+    nodeos_pid_file: nodeos.pid
+    nodeos_log_file: "{{ eosio_log_dir }}/nodeos.log"
+    # producer info
+    producer_name: eosio
+    agent_name: "{{ ansible_hostname }}"
+    # keosd
+    keosd_http_port: 8880
+    keosd_script_dir: "/opt/eosio"
+    keosd_run_script: "{{ keosd_script_dir }}/keosd.sh"
+    keosd_data_dir: "/opt/eosio"
+    keosd_config_dir: "{{ nodeos_config_dir }}/keosd"
+    keosd_spool_dir: /var/spool/keosd
+    keosd_pid_file: keosd.pid
+    keosd_log_file: "{{ eosio_log_dir }}/keosd.log"
+    # patroneos
+    patroneos_http_port: 8888
+    patroneos_script_dir: "/opt/eosio"
+    patroneos_run_script: "{{ patroneos_script_dir }}/patroneos.sh"
+    patroneos_data_dir: "/opt/eosio"
+    patroneos_config_dir: "{{ nodeos_config_dir }}/patroneos"
+    patroneos_spool_dir: /var/spool/patroneos
+    patroneos_pid_file: patroneos.pid
+    patroneos_log_file: "{{ eosio_log_dir }}/patroneos.log"
+    patroneos_mode: filter
 
-prod_us:
+#####################
+## Producers
+#####################
+
+producers:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    # eosio
+    eosio_version: 4.2.0-0  
+    eosio_user: eosio
+    eosio_group: eosio
+    eosio_log_dir: /var/log/eosio
+    eosio_lib_dir: /var/lib/eosio
+    eosio_home_opt: /home/{{ eosio_user }}/opt
+    eosio_etc_dir: /etc/eosio
+    eosio_etc_node_dir: '{{ eosio_etc_dir }}/node_00'
+    eosio_pub_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
+    # nodeos information
+    nodeos_p2p_port: 9876
+    nodeos_http_port: 8888
+    nodeos_data_dir: /opt/eosio
+    nodeos_config_dir: /opt/eosio
+    nodeos_script_dir: /opt/eosio
+    nodeos_run_script: "{{ nodeos_script_dir }}/nodeos.sh"
+    nodeos_spool_dir: /var/spool/nodeos
+    nodeos_pid_file: nodeos.pid
+    nodeos_log_file: "{{ eosio_log_dir }}/nodeos.log"
+    # producer info
+    agent_name: "{{ ansible_hostname }}"
+    producer_name: "{{ ansible_hostname }}"
+    # keosd
+    keosd_http_port: 8880
+    keosd_script_dir: "/opt/eosio"
+    keosd_run_script: "{{ keosd_script_dir }}/keosd.sh"
+    keosd_data_dir: "/opt/eosio"
+    keosd_config_dir: "{{ nodeos_config_dir }}/keosd"
+    keosd_spool_dir: /var/spool/keosd
+    keosd_pid_file: keosd.pid
+    keosd_log_file: "{{ eosio_log_dir }}/keosd.log"
+    # patroneos
+    patroneos_http_port: 8888
+    patroneos_mode: filter
+    patroneos_script_dir: "/opt/eosio"
+    patroneos_run_script: "{{ patroneos_script_dir }}/patroneos.sh"
+    patroneos_data_dir: "/opt/eosio"
+    patroneos_config_dir: "{{ nodeos_config_dir }}/patroneos"
+    patroneos_spool_dir: /var/spool/patroneos
+    patroneos_pid_file: patroneos.pid
+    patroneos_log_file: "{{ eosio_log_dir }}/patroneos.log"
   hosts:
-    aaaaaaaaaaa1:
+    aaaa1:
       pub_key: EOS5tMrfp4Rmwda2gsVivxch6aGmyUnNkXnH9XZqKBE1ubet1UFjk
       priv_key: 5JrdoiFc5vqSsSXveJAy7UyspsPit2drmHjzhGaC8henGtGxotr
-    aaaaaaaaaaa2:
+      zone: us-east1-b
+    aaaa2:
       pub_key: EOS8fSM4HSohcVy2AaKP65E36j2rJsZNAcc5GhrrP2bb8DSi1gYDq
       priv_key: 5KJtNY4DQQ2osu7m7ATJGkQ7c3jmNFQ76SyosyYuY4z5ZGzwdMr
-    aaaaaaaaaaa3:
+      zone: us-central1-a
+    aaaa3:
       pub_key: EOS6tQst4P393PdwauhdmuRfjibiSQuWkiHfJY6YsFTBj1AY7HSFF
       priv_key: 5KivBJEtAquUiFUmBupgPfa9yeLsA7sbmgwgX1omWqoFeyawvEe
-    aaaaaaaaaaa4:
+      zone: us-west1-a
+    aaaa4:
       pub_key: EOS84sXSacSjyn5k4eFaSsE7feUFnEvW7agdpxCt7oz6FowrfzXeU
       priv_key: 5KXcaZCTScn8mcQMSDw5yZKTwTSHNzXv3GFfCpYyfm3FwAYG4k6
-
-prod_south_america:
-  hosts:
-    thething:
-      pub_key: EOS6YT9BVb1owJfvcYQKrMUjEMJmzw7N7Hn8id8FLn1TPbvudPoAu
-      priv_key: 5KSz5sUFykW1TLpFQHyp9b7NfE95trFcvFW7pa7eWW5Uq48t9RQ
-    jaws:
-      pub_key: EOS6L3XgX3EHDEb6BCmGQQrKh6aFtyTJvFtAGwMMnb5hPM6mSumvF
-      priv_key: 5JJBYB9xuumFavypyA1qRSkCtqHDPAVi3765RJoUyHUN5ED1HaT
-    dwndead:
-      pub_key: EOS5PFNQWXAPnf1UMTrgPQDF2djL4wdQTjSgfkkqHkc5so4Ax5Jqs
-      priv_key: 5Hzh5QYBfwZ5k23geYKd9CRa1YRCtbMC92drRFn58DDg6hTcUgx
-    innocents:
-      pub_key: EOS6iezTGYmupeBRk1WV8rgcfT7RXvqRcwZYwYBtu5vrQWqmPSu4J
-      priv_key: 5K4d7YRkDMuyAePTW6XLf2FWmKksqFZv2UJCgopfbL7uV3TKT3R
+      zone: northamerica-northeast1-a
+#    aaaa5:
+#      pub_key: EOS6YT9BVb1owJfvcYQKrMUjEMJmzw7N7Hn8id8FLn1TPbvudPoAu
+#      priv_key: 5KSz5sUFykW1TLpFQHyp9b7NfE95trFcvFW7pa7eWW5Uq48t9RQ
+#      zone: southamerica-east1-a
+#    aaaa11:
+#      pub_key: EOS6L3XgX3EHDEb6BCmGQQrKh6aFtyTJvFtAGwMMnb5hPM6mSumvF
+#      priv_key: 5JJBYB9xuumFavypyA1qRSkCtqHDPAVi3765RJoUyHUN5ED1HaT
+#      zone: europe-west1-b
+#    aaaa12:
+#      pub_key: EOS5PFNQWXAPnf1UMTrgPQDF2djL4wdQTjSgfkkqHkc5so4Ax5Jqs
+#      priv_key: 5Hzh5QYBfwZ5k23geYKd9CRa1YRCtbMC92drRFn58DDg6hTcUgx
+#      zone: asia-east1-a
+#    aaaa13:
+#      pub_key: EOS6iezTGYmupeBRk1WV8rgcfT7RXvqRcwZYwYBtu5vrQWqmPSu4J
+#      priv_key: 5K4d7YRkDMuyAePTW6XLf2FWmKksqFZv2UJCgopfbL7uV3TKT3R
+#      zone: australia-southeast1-a
 
 prod_europe_1:
   hosts:
@@ -88,7 +189,7 @@ prod_asia:
       pub_key: EOS6rc3LWmQHZLhSE1BBCRScUKv1zGvbyCzRJ25izHdhKD8GtyXbD
       priv_key: 5KTDQ5mBXyRjUpnURPsWyJ1qkrPyiBvcXTmiEdftsEicZWHqRoT
 
-producers:
+producers_bak:
   hosts:
     theexorcist:
       pub_key: EOS5tMrfp4Rmwda2gsVivxch6aGmyUnNkXnH9XZqKBE1ubet1UFjk
@@ -174,13 +275,50 @@ producers:
 #####################
 
 testers :
-  hosts:
-    eosuseraaaaa
   vars:
-    pub_key: EOS6rc3LWmQHZLhSE1BBCRScUKv1zGvbyCzRJ25izHdhKD8GtyXbD
-    priv_key: 5KTDQ5mBXyRjUpnURPsWyJ1qkrPyiBvcXTmiEdftsEicZWHqRoT
-
-#####################
-## Producers
-#####################
-    
+    # eosio
+    eosio_version: 4.2.0-0  
+    eosio_user: eosio
+    eosio_group: eosio
+    eosio_log_dir: /var/log/eosio
+    eosio_lib_dir: /var/lib/eosio
+    eosio_home_opt: /home/{{ eosio_user }}/opt
+    eosio_etc_dir: /etc/eosio
+    eosio_etc_node_dir: '{{ eosio_etc_dir }}/node_00'
+    eosio_pub_key: EOS5ngXVNizw6quBW2Yx2rRTUwhRxSB3tJ7dYgoMn4RJRAk13gWvb
+    # nodeos information
+    nodeos_p2p_port: 9876
+    nodeos_http_port: 8889
+    nodeos_data_dir: /opt/eosio
+    nodeos_config_dir: /opt/eosio
+    nodeos_script_dir: /opt/eosio
+    nodeos_run_script: "{{ nodeos_script_dir }}/nodeos.sh"
+    nodeos_spool_dir: /var/spool/nodeos
+    nodeos_pid_file: nodeos.pid
+    nodeos_log_file: "{{ eosio_log_dir }}/nodeos.log"
+    # producer info
+    agent_name: "{{ ansible_hostname }}"
+    producer_name: "{{ ansible_hostname }}"
+    # keosd
+    keosd_http_port: 8880
+    keosd_script_dir: "/opt/eosio"
+    keosd_run_script: "{{ keosd_script_dir }}/keosd.sh"
+    keosd_data_dir: "/opt/eosio"
+    keosd_config_dir: "{{ nodeos_config_dir }}/keosd"
+    keosd_spool_dir: /var/spool/keosd
+    keosd_pid_file: keosd.pid
+    keosd_log_file: "{{ eosio_log_dir }}/keosd.log"
+    # patroneos
+    patroneos_http_port: 8888
+    patroneos_mode: filter
+    patroneos_script_dir: "/opt/eosio"
+    patroneos_run_script: "{{ patroneos_script_dir }}/patroneos.sh"
+    patroneos_data_dir: "/opt/eosio"
+    patroneos_config_dir: "{{ nodeos_config_dir }}/patroneos"
+    patroneos_spool_dir: /var/spool/patroneos
+    patroneos_pid_file: patroneos.pid
+    patroneos_log_file: "{{ eosio_log_dir }}/patroneos.log"
+  hosts:
+    eosuseraaaaa:
+      pub_key: EOS6rc3LWmQHZLhSE1BBCRScUKv1zGvbyCzRJ25izHdhKD8GtyXbD
+      priv_key: 5KTDQ5mBXyRjUpnURPsWyJ1qkrPyiBvcXTmiEdftsEicZWHqRoT

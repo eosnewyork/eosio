@@ -4,7 +4,7 @@ PIDFILE={{ nodeos_spool_dir }}/{{ nodeos_pid_file }}
 
 start () {
     echo "starting..."
-    nodeos --data-dir {{ nodeos_data_dir }} --config-dir {{ nodeos_config_dir }} &>> {{ nodeos_log_file }} &
+    nodeos --genesis-json {{ nodeos_data_dir }}/genesis.json --data-dir {{ nodeos_data_dir }} --config-dir {{ nodeos_config_dir }} &>> {{ nodeos_log_file }} &
     echo "$!" > $PIDFILE
 }
 

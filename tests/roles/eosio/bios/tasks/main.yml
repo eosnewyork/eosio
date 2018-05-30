@@ -1,29 +1,4 @@
 
-- name: copy boot_chain.sh
-  template:
-    src: scripts/boot_chain.sh.j2
-    dest: /tmp/boot_chain.sh
-    owner: "{{ eosio_user }}"
-    mode: 0755
-
-#- name: copy setbp.json 
-#  template:
-#    src: setbp.json.j2
-#    dest: /tmp/setbp.json
-#    owner: "{{ eosio_user }}"
-#    mode: 0755
-
-- name: copy boot config
-  template:
-    src: eosio/config.ini.j2
-    dest: "{{ nodeos_config_dir }}/config.ini"
-    owner: "{{ eosio_user }}"
-    mode: 0700
-
-- name: copy contracts
-  copy:
-    src: contracts_{{ eosio_version }}
-    dest: "{{ eosio_etc_dir }}"
 
 - name: start keosd service
   service:
@@ -44,6 +19,32 @@
   debug:
     msg: "{{ nodeos_log.stdout }}"
 
+- name: copy boot_chain.sh
+  template:
+    src: scripts/boot_chain.sh.j2
+    dest: /tmp/boot_chain.sh
+    owner: "{{ eosio_user }}"
+    mode: 0755
+
+- name: copy setbp.json 
+  template:
+    src: setbp.json.j2
+    dest: /tmp/setbp.json
+    owner: "{{ eosio_user }}"
+    mode: 0755
+
+- name: copy contracts
+  copy:
+    src: contracts_{{ eosio_version }}
+    dest: "{{ eosio_etc_dir }}"
+
+#- name: add cleos scripts
+#  template:
+#    src: scripts/cleos.sh.j2
+#    dest: "{{ nodeos_script_dir }}/cleos.sh"
+#    owner: "{{ eosio_user }}"
+#    mode: 0755
+
 - name: create wallet
   become: "{{ eosio_user }}"
   command: cleos --wallet-url http://localhost:{{ keosd_http_port}} wallet create
@@ -62,12 +63,11 @@
   debug:
     msg: "{{ privkey_output.stdout_lines|list }}"
 
-- name: run boot script
-  become_user: "{{ eosio_user }}"
-  command: /tmp/boot_chain.sh
-  register: boot_out
-  #ignore_errors: yes
+#- name: run boot script
+#  become_user: "{{ eosio_user }}"
+#  command: /tmp/boot_chain.sh
+#  register: boot_out
 
-- name: output of boot
-  debug:
-    msg: "{{ boot_out.stdout_lines|list }}"
+#- name: output of boot
+#  debug:
+#    msg: "{{ boot_out.stdout_lines|list }}"
