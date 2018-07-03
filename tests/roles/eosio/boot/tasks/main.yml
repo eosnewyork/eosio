@@ -1,0 +1,8 @@
+- name: run boot script
+  become_user: "{{ eosio_user }}"
+  command: /tmp/boot_chain.sh
+  register: boot_out
+
+- name: output of boot
+  debug:
+    msg: "{{ boot_out.stdout_lines|list }}"

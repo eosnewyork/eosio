@@ -1,0 +1,11 @@
+{
+    "schedule" : [
+        {% for host in groups['producers'] -%}
+        {
+            "producer_name":"{{ host }}",
+            "block_signing_key" : "{{ hostvars[host]['pub_key'] }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor -%}
+        
+    ]
+}

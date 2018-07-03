@@ -1,0 +1,15 @@
+[Unit]
+Description=patroneos service
+After=syslog.target network.target 
+
+[Service]
+User={{ eosio_user }}
+Type=forking
+PIDFile={{ patroneos_spool_dir }}/{{ patroneos_pid_file }}
+# EnvironmentFile = 
+ExecStart={{ patroneos_run_script }} start
+ExecReload={{ patroneos_run_script }} restart
+ExecStop={{ patroneos_run_script }} stop
+
+[Install]
+WantedBy=multi-user.target

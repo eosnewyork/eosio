@@ -1,4 +1,31 @@
 
+########################
+# start keosd
+########################
+
+- name: enable and start keosd
+  service:
+    name: keosd
+    enabled: yes
+    state: restarted
+
+- name: wait for keosd to start
+  wait_for:
+    timeout=5
+  delegate_to: localhost
+
+- name: tail keosd log file
+  command: tail {{ keosd_log_file }}
+  register: keosd_log
+
+- name: verify keosd is up and running
+  debug:
+    msg: "{{ keosd_log.stdout_lines | quote }}"
+
+########################
+# start nodeos
+########################
+
 - name: enable and start nodeos
   service:
     name: nodeos
@@ -18,3 +45,25 @@
   debug:
     msg: "{{ nodeos_log.stdout_lines | quote }}"
 
+########################
+# start patroneos
+########################
+
+#- name: enable and start patroneos
+#  service:
+#    name: patroneos
+#    enabled: yes
+#    state: restarted
+
+#- name: wait for patroneos to start
+#  wait_for:
+#    timeout=5
+#  delegate_to: localhost
+
+#- name: tail patroneos log file
+#  command: tail {{ patroneos_log_file }}
+#  register: patroneos_log
+
+#- name: verify patroneos is up and running
+#  debug:
+#    msg: "{{ patroneos_log.stdout_lines | quote }}"

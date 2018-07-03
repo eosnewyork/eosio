@@ -1,15 +1,66 @@
 #!/bin/bash
 
-#cd {{ eosio_bios_dir }}
-#pwd
+{% for host in groups['producers'] -%}
+# create accounts
+{{ nodeos_script_dir }}/cleos.sh create account eosio {{ host }} {{ hostvars[host]['pub_key'] }} {{ hostvars[host]['pub_key'] }} -p eosio@active
+{% endfor -%}
 
-#./eos-bios --use-cache boot
+{{ nodeos_script_dir }}/cleos.sh set contract eosio {{ eosio_etc_dir }}/contracts_{{ eosio_version }}/eosio.bios -p eosio@active
 
-#echo "Would have run:"
-#echo "./eos-bios join"
+#
+# ADVANCED system contracts and the like
+# 
 
+# create eosio.token and eosio.msig account
+{{ nodeos_script_dir }}/cleos.sh create account eosio eosio.token {{ pub_key }} {{ pub_key }}
+{{ nodeos_script_dir }}/cleos.sh create account eosio eosio.msig {{ pub_key }} {{ pub_key }}
+
+# set priv eosio.token and eosio.msig
+{{ nodeos_script_dir }}/cleos.sh push action eosio setpriv '{"account":"eosio.token","is_priv": 1}' -p eosio@active
+{{ nodeos_script_dir }}/cleos.sh push action eosio setpriv '{"account":"eosio.msig","is_priv": 1}' -p eosio@active
+
+# set token contract
+{{ nodeos_script_dir }}/cleos.sh set contract eosio.token {{ eosio_etc_dir }}/contracts_{{ eosio_version }}/eosio.token -p eosio.token@active
+
+# set msig contract
+{{ nodeos_script_dir }}/cleos.sh set contract eosio.msig {{ eosio_etc_dir }}/contracts_{{ eosio_version }}/eosio.msig -p eosio.msig@active
+
+# create tokens
+cleos --wallet-url http://localhost:{{ keosd_http_port}} push action eosio.token create '["eosio", "1000000000.0000 EOS", 0, 0, 0]' -p eosio.token@active
+# issue tokens
+cleos --wallet-url http://localhost:{{ keosd_http_port}} push action eosio.token issue '["eosio", "6000000.0000 EOS", "MEMO"]' -p eosio@active
+
+cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} push action eosio setprods "$(cat /tmp/setbp.json)" -p eosio@active
+
+#sleep 30s
+
+# set system contract
+cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} set contract eosio {{ eosio_etc_dir }}/contracts_{{ eosio_version }}/eosio.system -p eosio@active -x 120
+
+sleep 5s
+# set a second time due to a bug
+cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} set contract eosio {{ eosio_etc_dir }}/contracts_{{ eosio_version }}/eosio.system -p eosio@active -x 120
+
+# set max ram
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} push action eosio setram '{"max_ram_size":25769803776}' -p eosio@active
 
 {% for host in groups['producers'] -%}
-cleos create account eosio {{ host }} {{ hostvars[host]['pub_key'] }} {{ hostvars[host]['pub_key'] }}
-cleos push action eosio setprods '{ "version": "042918","producers": [{"producer_name":"{{ host }}","block_signing_key":"{{ hostvars[host]['pub_key'] }}"}] }' -p eosio 
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} system newaccount --transfer --stake-net "500000.0000 EOS" --stake-cpu "500000.0000 EOS" eosio {{ host }} {{ hostvars[host]['pub_key'] }}  -p eosio@active
+
+# transfer funds
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} transfer eosio {{ host }}  "1000000.0000 EOS" -p eosio@active
+# buy ram for account
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} system buyram eosio {{ host }} "10.0000 EOS" -p eosio@active
+# import priv key for account
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} wallet import {{ hostvars[host]['priv_key'] }}                                                          # reg producer  
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} system regproducer {{ host }} {{ hostvars[host]['pub_key'] }} -p {{ host }}@active
+
+{% endfor -%}
+
+{% for host in groups['testers'] -%}
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} system newaccount --transfer --stake-net "500000.0000 EOS" --stake-cpu "500000.0000 EOS" eosio {{ host }} {{ hostvars[host]['pub_key'] }}  -p eosio@active
+
+# transfer funds
+#cleos --url http://localhost:{{ nodeos_http_port }} --wallet-url http://localhost:{{ keosd_http_port }} transfer eosio {{ host }}  "1000000.0000 EOS" -p eosio@active
+
 {% endfor -%}
