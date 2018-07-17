@@ -30,11 +30,11 @@ https://www.atlassian.com/git/tutorials/install-git
 pip install git+https://github.com/eosnewyork/eospy
 ```
 
-## `get_rewards.py`
+## `chk_rewards.py`
 
 Get the rewards information about an account
 
 Example
 ```
-./get_rewards.py --account eosnewyorkio
+./chk_rewards.py --account eosnewyorkio
 ```
