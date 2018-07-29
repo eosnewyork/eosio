@@ -19,3 +19,5 @@ snapshot_creator.py --acct-file /tmp/acct_snapshot.txt --out-file /tmp/20180728.
 ```
 
 ## C# script
+
+Please see this [repo](https://github.com/eosnewyork/EOSAccountInfo)
