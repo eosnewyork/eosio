@@ -3,7 +3,7 @@
 
 Scripts that takes a file containing a list of accounts and generates a csv file in the format:
 
-<account creation time>, <account name>, <total EOS owned>
+`<account creation time>, <account name>, <total EOS owned>`
 
 The files are uploaded to https://www.eossnapshots.io 
 
