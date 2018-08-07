@@ -6,7 +6,7 @@ if [ ! `which jq` ]; then
   exit 1
 fi
 
-if [ "$1" == "" ]; then
+if [ -z "$1" ]; then
   echo "Please pass the URL for your bp.json"
   exit 1
 fi
@@ -27,8 +27,3 @@ echo "==============================="
 echo "cleos push action producerjson set '{\"owner\":$prod_name,\"json\": \"`cat $bp_file`\"}' -p $prod_name@active"
 
 rm $bp_file
-
- 
-
-
-
