@@ -14,13 +14,13 @@ fi
 url=$1
 
 bp_file=/tmp/`date '+%s'`_bp.json
-# get the bp.json
-wget $url -O $bp_file
+# get the bp.json and compact it
+wget --quiet -O - "$url" | jq -M -c '.' >$bp_file
 
 # get producer name
 prod_name=`cat $bp_file | jq '.producer_account_name'`
-# remove newlines, escape quotes, and remove all whitespace
-sed -i ':a;N;$!ba;s/\n/ /g; s/\r/ /g; s/"/\\"/g; s/ //g' $bp_file
+# escape quotes
+sed -i 's/"/\\"/g' $bp_file
 
 echo "Creating command for $prod_name"
 echo "==============================="
