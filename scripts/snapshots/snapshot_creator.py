@@ -14,6 +14,7 @@ parser.add_argument('--url', '-u', type=str, action='store', default='http://loc
 parser.add_argument('--acct-file', type=str, action='store', default='/opt/eosio/acct_snapshot.txt', dest='acct_file')
 parser.add_argument('--time', type=str, action='store', default='', dest='time')
 parser.add_argument('--out-file', type=str, help='%%Y-%%m-%%d%%H:%%M', action='store', required=True, dest='out_file')
+parser.add_argument('--staked', action='store_true', dest='staked')
 args = parser.parse_args()
 
 global acct_age
@@ -29,7 +30,7 @@ ce = eospy.cleos.Cleos(args.url, version=args.api_version)
 global rslts
 rslts = []
 
-def check_account(name) :
+def check_account(name, get_staked=False) :
     acct_info = ce.get_account(name)
     created_time = dt.datetime.strptime(acct_info['created'], '%Y-%m-%dT%H:%M:%S.%f')
     if created_time < acct_age :
@@ -52,8 +53,12 @@ def check_account(name) :
         except TypeError :
             refund_cpu = 0.0
             refund_net = 0.0
-        staked_total = cpu + net + refund_cpu + refund_net
-        rslts.append('{0},{1},{2:.4f}'.format(created_time, name, liquid + staked_total))
+        staked_total = cpu + net
+        refund_total = refund_cpu + refund_net
+        if get_staked :
+            rslts.append('{0},{1},{2:.4f},{2:.4f}'.format(created_time, name, liquid + staked_total + refund_total, staked_total))
+        else :
+            rslts.append('{0},{1},{2:.4f}'.format(created_time, name, liquid + staked_total + refund_total))
 
 with open(args.acct_file) as ro:
     accounts = list(ro.readlines())
@@ -71,7 +76,7 @@ while cnt < total :
     proc_list = accounts[cnt:cnt+num_thds]
     for proc in proc_list :
         name = proc.strip('\n')
-        t = Thread(target=check_account, args=(name,))
+        t = Thread(target=check_account, args=(name,args.staked))
         t.start()
         threads.append(t)
     for thd in threads :
@@ -82,6 +87,9 @@ while cnt < total :
 
 print('Rslts cnt: {0}'.format(len(rslts)))
 with open(args.out_file,'w') as wb:
-    wb.write('creation_time,account_name,total_eos\n')
+    if args.staked :
+        wb.write('creation_time,account_name,total_eos,total_staked\n')
+    else :
+        wb.write('creation_time,account_name,total_eos\n')
     for line in rslts:
         wb.write('{}\n'.format(line))
