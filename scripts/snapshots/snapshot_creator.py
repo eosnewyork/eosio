@@ -56,7 +56,7 @@ def check_account(name, get_staked=False) :
         staked_total = cpu + net
         refund_total = refund_cpu + refund_net
         if get_staked :
-            rslts.append('{0},{1},{2:.4f},{2:.4f}'.format(created_time, name, liquid + staked_total + refund_total, staked_total))
+            rslts.append('{0},{1},{2:.4f},{3:.4f}'.format(created_time, name, liquid + staked_total + refund_total, staked_total))
         else :
             rslts.append('{0},{1},{2:.4f}'.format(created_time, name, liquid + staked_total + refund_total))
 
