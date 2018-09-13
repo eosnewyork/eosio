@@ -45,7 +45,10 @@ print(trx)
 while(True) :
     if time_diff > seconds_in_day :
         print('Claiming')
-        ce.push_transaction(trx, args.key_claim)
+        resp = ce.push_transaction(trx, args.key_claim)
+        print(resp)
+        # wait for the trx to clear
+        time.sleep(30)
     else :
         # fake claim     
         print('{} seconds left until claim. Sleeping for a bit.'.format(seconds_left))
