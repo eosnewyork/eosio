@@ -20,13 +20,6 @@ args = parser.parse_args()
 ce = Cleos(args.url)
 print(ce.get_info())
 
-# get info on producer
-prod_info = ce.get_producers(lower_bound=args.account, limit=1)['rows'][0]
-# check last time
-now = time.time()
-# last_claim_time == microseconds so need them in seconds
-time_diff = now - int(prod_info['last_claim_time'])/1000/1000
-seconds_left = seconds_in_day - time_diff
 # create claim transaction
 data = ce.abi_json_to_bin('eosio', 'claimrewards',{'owner':args.account})
 trx = {"actions":
@@ -43,7 +36,15 @@ trx = {"actions":
 print(trx)
 # 
 while(True) :
-    if time_diff > seconds_in_day :
+    # get info on producer
+    prod_info = ce.get_producers(lower_bound=args.account, limit=1)['rows'][0]
+    # check last time
+    now = time.time()
+    # last_claim_time == microseconds so need them in seconds
+    time_diff = now - int(prod_info['last_claim_time'])/1000/1000
+    seconds_left = seconds_in_day - time_diff
+    # check last claimed time
+    if time_diff >= seconds_in_day :
         print('Claiming')
         resp = ce.push_transaction(trx, args.key_claim)
         print(resp)
@@ -61,7 +62,8 @@ while(True) :
         elif seconds_left > seconds_in_hour * 3 :
             sleep_time = seconds_in_hour * 3
         else :
-            sleep_time = seconds_left
+            # ensure the next time diff will be 
+            sleep_time = seconds_left + 1
         # sleep
         print('Sleeping {} seconds'.format(sleep_time))
         time.sleep(sleep_time)    
