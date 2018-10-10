@@ -4,6 +4,7 @@ import argparse
 from eospy.cleos import Cleos
 import time
 import os
+import datetime as dt
 
 # args
 parser = argparse.ArgumentParser(description='Claim rewards')
@@ -25,7 +26,7 @@ while(True) :
         info = ce.get_account(act)
         cpu = info['cpu_limit']
         net = info['net_limit']
-        line = '{},{},{},{},{},{},{}\n'.format(act, cpu['used'], cpu['available'], cpu['max'], net['used'], net['available'], net['max'])
+        line = '{},{},{},{},{},{},{},{}\n'.format(print(dt.datetime.now()),act, cpu['used'], cpu['available'], cpu['max'], net['used'], net['available'], net['max'])
         with open(args.outfile, 'a') as out :
             out.write(line)
     time.sleep(60)
