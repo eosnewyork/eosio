@@ -31,7 +31,10 @@ global rslts
 rslts = []
 
 def check_account(name, get_staked=False) :
-    acct_info = ce.get_account(name)
+    try:
+        acct_info = ce.get_account(name)
+    except :
+        print('failed to get account {}'.format(name))
     created_time = dt.datetime.strptime(acct_info['created'], '%Y-%m-%dT%H:%M:%S.%f')
     if created_time < acct_age :
         # get liquid balance
