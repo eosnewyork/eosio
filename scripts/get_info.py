@@ -13,7 +13,7 @@ args = parser.parse_args()
 # connect up
 ce = Cleos(args.url)
 
-header = 'virtual_block_cpu_limit,virtual_block_net_limit,block_net_limit\n'
+header = 'datetime,virtual_block_cpu_limit,virtual_block_net_limit,block_cpu_limit,block_net_limit\n'
 if not os.path.isfile(args.outfile) :
     with open(args.outfile, 'w') as out :
         out.write(header)
@@ -43,4 +43,4 @@ while(True) :
                                               info['block_net_limit'])
     with open(args.outfile, 'a') as out :
         out.write(line)
-    time.sleep(60)
+    time.sleep(5)
