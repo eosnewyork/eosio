@@ -45,11 +45,9 @@ def check_account(name, get_staked=False) :
             liquid = 0
         # cpu/net balance
         try :
-            cpu = float(acct_info['self_delegated_bandwidth']['cpu_weight'].split()[0])
-            net = float(acct_info['self_delegated_bandwidth']['net_weight'].split()[0])
+            staked_total = float(acct_info['voter_info']['staked']) / 10000
         except TypeError:
-            cpu = 0
-            net = 0
+            staked_total = 0
         # get refund amount
         try :
             refund_cpu = float(acct_info["refund_request"]['cpu_amount'].split()[0])
@@ -57,7 +55,6 @@ def check_account(name, get_staked=False) :
         except TypeError :
             refund_cpu = 0.0
             refund_net = 0.0
-        staked_total = cpu + net
         refund_total = refund_cpu + refund_net
         if get_staked :
             rslts.append('{0},{1},{2:.4f},{3:.4f}'.format(created_time, name, liquid + staked_total + refund_total, staked_total))
