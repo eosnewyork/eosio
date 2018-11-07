@@ -36,7 +36,7 @@ def check_account(name, get_staked=False) :
         created_time = dt.datetime.strptime(acct_info['created'], '%Y-%m-%dT%H:%M:%S.%f')
     except :
         print('failed to get account {}'.format(name))
-        
+        exit(0)    
     if created_time < acct_age :
         # get liquid balance
         try :
