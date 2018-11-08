@@ -99,5 +99,7 @@ while(True) :
         print(resp)
     except ValueError as ex:
         print(ex)
+    except requests.exceptions.HTTPError as ex:
+        print(ex)
     # sleep for 60 seconds
     time.sleep(60)
