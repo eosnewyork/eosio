@@ -94,7 +94,10 @@ while(True) :
         "data":data['binargs']}
     ]}
     # transaction
-    resp = ce.push_transaction(trx, args.key_permission, broadcast=args.broadcast)
-    print(resp)
+    try :
+        resp = ce.push_transaction(trx, args.key_permission, broadcast=args.broadcast)
+        print(resp)
+    except ValueError as ex:
+        print(ex)
     # sleep for 60 seconds
     time.sleep(60)
