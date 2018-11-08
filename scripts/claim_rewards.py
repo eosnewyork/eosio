@@ -11,7 +11,9 @@ seconds_in_day = 24 * seconds_in_hour
 # args
 parser = argparse.ArgumentParser(description='Claim rewards')
 parser.add_argument('--url', '-u', type=str, action='store', default='https://api.eosnewyork.io', dest='url')
-parser.add_argument('--accounts','-a', type=str, action='store', required=True, dest='accounts')
+parser.add_argument('--account','-a', type=str, action='store', required=True, dest='account')
+parser.add_argument('--claim-permission','-p', type=str, action='store', required=True, dest='permission')
+parser.add_argument('--key-claim','-k', type=str, action='store', default='claim', dest='key_claim')
 args = parser.parse_args()
 
 # claim rewards
