@@ -8,6 +8,7 @@ import requests
 parser = argparse.ArgumentParser(description='Push token price to delphioracle')
 parser.add_argument('--url', '-u', type=str, action='store', default='https://api.eosnewyork.io', dest='url')
 parser.add_argument('--key-permission','-k', type=str, action='store', required=True, dest='key_permission')
+parser.add_argument('--wait','-w', type=int, action='store',default=1, dest='wait')
 parser.add_argument('--broadcast','-b', action='store_true', dest='broadcast')
 args = parser.parse_args()
 
@@ -102,4 +103,4 @@ while(True) :
     except requests.exceptions.HTTPError as ex:
         print(ex)
     # sleep for 60 seconds
-    time.sleep(60)
+    time.sleep(60*args.wait)
