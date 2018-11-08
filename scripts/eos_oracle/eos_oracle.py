@@ -8,6 +8,7 @@ import requests
 parser = argparse.ArgumentParser(description='Push token price to delphioracle')
 parser.add_argument('--url', '-u', type=str, action='store', default='https://api.eosnewyork.io', dest='url')
 parser.add_argument('--key-permission','-k', type=str, action='store', required=True, dest='key_permission')
+parser.add_argument('--broadcast','-b', action='store_true', dest='broadcast')
 args = parser.parse_args()
 
 # connect up
@@ -92,8 +93,8 @@ while(True) :
             }],
         "data":data['binargs']}
     ]}
-    # temp
-    resp = ce.push_transaction(trx, args.key_permission, broadcast=False)
+    # transaction
+    resp = ce.push_transaction(trx, args.key_permission, broadcast=args.broadcast)
     print(resp)
     # sleep for 60 seconds
     time.sleep(60)
